@@ -1,0 +1,49 @@
+[gd_scene load_steps=12 format=3 uid="uid://b8n7fyc7yinnj"]
+
+[ext_resource type="Environment" uid="uid://c3afpbdc12ko3" path="res://addons/voxel/Examples/Environment/Photostudio.tres" id="1_etq48"]
+[ext_resource type="PackedScene" uid="uid://dk55lwllihbkn" path="res://addons/voxel/VoxelBox/VoxelBox/TexturedVoxelBox.tscn" id="2_h717o"]
+[ext_resource type="Texture2D" uid="uid://cxk2icp234ia7" path="res://addons/voxel/Examples/TorusBox/Textures/CubeMap.png" id="3_ayd2u"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://dmx2s54i4vhs5" path="res://addons/voxel/Examples/TorusBox/Textures/Voxels.png" id="4_qt2sa"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://bim560poosi50" path="res://addons/voxel/Examples/TorusBox/Textures/Color.png" id="5_e6yth"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://r07iflxwuvt4" path="res://addons/voxel/Examples/TorusBox/Textures/Emission.png" id="6_pwl1e"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://c2hb5urkt16aq" path="res://addons/voxel/Examples/TorusBox/Textures/Normal.png" id="7_d7mem"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://dajl16whn53q8" path="res://addons/voxel/Examples/TorusBox/Textures/RSMA.png" id="8_ngl8p"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_vm1hr"]
+top_radius = 0.8
+bottom_radius = 0.8
+height = 0.03
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0mctm"]
+albedo_color = Color(0.4, 0.4, 0.4, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_jv4d4"]
+
+[node name="TorusBox" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("1_etq48")
+
+[node name="Stage" type="Node3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+
+[node name="TexturedVoxelBox" parent="Stage" instance=ExtResource("2_h717o")]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.3, -0.25, 0.4)
+voxel_size = 0.01
+size_in_cubes = Vector3i(4, 5, 3)
+cube_map_texture = ExtResource("3_ayd2u")
+voxel_textures = ExtResource("4_qt2sa")
+color_textures = ExtResource("5_e6yth")
+emission_textures = ExtResource("6_pwl1e")
+normal_textures = ExtResource("7_d7mem")
+rsma_textures = ExtResource("8_ngl8p")
+
+[node name="Table" type="MeshInstance3D" parent="Stage"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+mesh = SubResource("CylinderMesh_vm1hr")
+surface_material_override/0 = SubResource("StandardMaterial3D_0mctm")
+
+[node name="SphereToDropShadow" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1.41692, 2.06658, -1.73307)
+mesh = SubResource("SphereMesh_jv4d4")
+skeleton = NodePath("../Stage")

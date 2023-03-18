@@ -1,0 +1,27 @@
+[remap]
+
+importer="2d_array_texture"
+type="CompressedTexture2DArray"
+uid="uid://r07iflxwuvt4"
+path.bptc="res://.godot/imported/Emission.png-49464f15f4b6ac0227aab7c1d9cae380.bptc.ctexarray"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+
+[deps]
+
+source_file="res://addons/voxel/Examples/TorusBox/Textures/Emission.png"
+dest_files=["res://.godot/imported/Emission.png-49464f15f4b6ac0227aab7c1d9cae380.bptc.ctexarray"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=true
+compress/lossy_quality=0.7
+compress/hdr_compression=0
+compress/channel_pack=0
+mipmaps/generate=false
+mipmaps/limit=-1
+slices/horizontal=16
+slices/vertical=16

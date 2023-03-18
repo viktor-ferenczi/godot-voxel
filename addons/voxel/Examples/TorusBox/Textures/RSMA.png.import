@@ -1,0 +1,26 @@
+[remap]
+
+importer="2d_array_texture"
+type="CompressedTexture2DArray"
+uid="uid://dajl16whn53q8"
+path="res://.godot/imported/RSMA.png-704218c504b10039e7fac53dc75f82ea.ctexarray"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://addons/voxel/Examples/TorusBox/Textures/RSMA.png"
+dest_files=["res://.godot/imported/RSMA.png-704218c504b10039e7fac53dc75f82ea.ctexarray"]
+
+[params]
+
+compress/mode=3
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/channel_pack=0
+mipmaps/generate=false
+mipmaps/limit=-1
+slices/horizontal=16
+slices/vertical=16
