@@ -16,7 +16,7 @@ import numpy as np
 import cv2
 
 COUNT = 256
-RES = 128
+RES = 192
 
 MATERIALS_DIR = 'Materials'
 OUTPUT_DIR = '.'

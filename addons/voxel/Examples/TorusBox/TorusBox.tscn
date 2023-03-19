@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://b8n7fyc7yinnj"]
+[gd_scene load_steps=16 format=3 uid="uid://b8n7fyc7yinnj"]
 
 [ext_resource type="Environment" uid="uid://c3afpbdc12ko3" path="res://addons/voxel/Examples/Environment/Photostudio.tres" id="1_etq48"]
+[ext_resource type="Script" path="res://addons/voxel/Examples/TorusBox/TorusBox.gd" id="1_n3c0i"]
 [ext_resource type="PackedScene" uid="uid://dk55lwllihbkn" path="res://addons/voxel/VoxelBox/VoxelBox/TexturedVoxelBox.tscn" id="2_h717o"]
 [ext_resource type="Texture2D" uid="uid://cxk2icp234ia7" path="res://addons/voxel/Examples/TorusBox/Textures/CubeMap.png" id="3_ayd2u"]
 [ext_resource type="CompressedTexture2DArray" uid="uid://dmx2s54i4vhs5" path="res://addons/voxel/Examples/TorusBox/Textures/Voxels.png" id="4_qt2sa"]
@@ -19,7 +20,46 @@ albedo_color = Color(0.4, 0.4, 0.4, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_jv4d4"]
 
+[sub_resource type="Animation" id="Animation_8ovjl"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Stage:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_2gi3a"]
+resource_name = "RotateStage"
+length = 8.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Stage:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 6.28319, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_13wll"]
+_data = {
+"RESET": SubResource("Animation_8ovjl"),
+"RotateStage": SubResource("Animation_2gi3a")
+}
+
 [node name="TorusBox" type="Node3D"]
+script = ExtResource("1_n3c0i")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("1_etq48")
@@ -32,6 +72,7 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.3, 
 voxel_size = 0.01
 size_in_cubes = Vector3i(4, 5, 3)
 cube_map_texture = ExtResource("3_ayd2u")
+uv_scale = 8.0
 voxel_textures = ExtResource("4_qt2sa")
 color_textures = ExtResource("5_e6yth")
 emission_textures = ExtResource("6_pwl1e")
@@ -44,6 +85,21 @@ mesh = SubResource("CylinderMesh_vm1hr")
 surface_material_override/0 = SubResource("StandardMaterial3D_0mctm")
 
 [node name="SphereToDropShadow" type="MeshInstance3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1.41692, 2.06658, -1.73307)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1.81692, 2.06658, -1.23307)
+visible = false
 mesh = SubResource("SphereMesh_jv4d4")
 skeleton = NodePath("../Stage")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.858092, -0.253999, 0.446277, -0.00182833, 0.867577, 0.497299, -0.513493, -0.427544, 0.743997, 2, 1.3, 3)
+environment = ExtResource("1_etq48")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_13wll")
+}
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.939693, -0.241845, 0.241845, 0, 0.707107, 0.707107, -0.34202, 0.664463, -0.664463, 0, 0, 0)
+shadow_enabled = true
+shadow_bias = 0.02

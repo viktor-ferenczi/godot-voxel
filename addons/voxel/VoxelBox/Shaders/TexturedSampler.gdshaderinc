@@ -72,6 +72,24 @@ overhead from CPU to GPU memory.
 uniform sampler2DArray voxel_textures;
 
 
+/* Scaling factor for the voxel UV coordinates to control texture repetition
+
+1.0: The texture cover the side of an entire voxel cube (16x16 voxels)
+16.0: The 
+
+Anything in-between will repeat the texture more than once over the voxel cube.
+
+Leave it on the default 16.0 for games with large (1m^3) voxels where the same
+block type should looks the same everywhere.
+
+Set it to a lower value between 1.0 and 8.0 for games with smaller voxels,
+where the voxel textures are expected to have a bit of variance even if they
+are of the same type (stone, rusty metal, tiled floor).
+
+*/
+uniform float uv_scale = 16.0;
+
+
 /* Voxel face base color and transmittance textures
 
 Format: RGBA8
@@ -211,11 +229,11 @@ it depends on the actual use case. A generic solution could be made based on
 a 256x1 R only texture encoding the textures required on one bit each for each
 of the possible voxel values.
 */
-void pbr_lookups(int voxel, vec2 uv, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
+void pbr_lookups(int voxel, vec2 scaled_uv, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
 	float texture_layer_index = float(voxel);
-	emission = texture(emission_textures, vec3(uv, texture_layer_index)).rgb;
-	normal_map = texture(normal_textures, vec3(uv, texture_layer_index)).rgb;
-	rsma = texture(rsma_textures, vec3(uv, texture_layer_index));
+	emission = texture(emission_textures, vec3(scaled_uv, texture_layer_index)).rgb;
+	normal_map = texture(normal_textures, vec3(scaled_uv, texture_layer_index)).rgb;
+	rsma = texture(rsma_textures, vec3(scaled_uv, texture_layer_index));
 }
 
 
@@ -236,8 +254,9 @@ rsma: Roughness, specular, metallic and ambient occlusion
 Called only once per ray for the first opaque voxel hit by the ray.
 */
 void get_opaque_material(ivec3 tpos, int voxel, vec4 color, vec2 uv, out vec3 albedo, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
-	albedo = texture(color_textures, vec3(uv, float(voxel))).rgb;
-	pbr_lookups(voxel, uv, emission, normal_map, rsma);
+	vec2 scaled_uv = uv * uv_scale;
+	albedo = texture(color_textures, vec3(scaled_uv, float(voxel))).rgb;
+	pbr_lookups(voxel, scaled_uv, emission, normal_map, rsma);
 }
 
 
@@ -262,7 +281,8 @@ voxels with the same value. Surface normal_map and rsma are used only on the
 first surface hit, no need to return those if first is false.
 */
 void get_transparent_material(ivec3 tpos, int voxel, vec4 color, vec2 uv, out vec3 transmittance, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
-	color = texture(color_textures, vec3(uv, float(voxel)));
+	vec2 scaled_uv = uv * uv_scale;
+	color = texture(color_textures, vec3(scaled_uv, float(voxel)));
 	transmittance = 1.0 - color.rgb * (1.0 - color.a);
-	pbr_lookups(voxel, uv, emission, normal_map, rsma);
+	pbr_lookups(voxel, scaled_uv, emission, normal_map, rsma);
 }

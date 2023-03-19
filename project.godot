@@ -11,5 +11,15 @@ config_version=5
 [application]
 
 config/name="Voxel"
-config/features=PackedStringArray("4.1", "Forward Plus")
+run/main_scene="res://addons/voxel/Examples/TorusBox/TorusBox.tscn"
+config/features=PackedStringArray("4.0", "Forward Plus")
 config/icon="res://icon.png"
+
+[display]
+
+window/size/viewport_width=1880
+window/size/viewport_height=1000
+
+[rendering]
+
+anti_aliasing/quality/screen_space_aa=1
