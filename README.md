@@ -64,7 +64,6 @@ opaque voxel can also be customized.
 
 There was a Vox resource loader, but it got broken by a late Godot beta.
 
-
 ### Texture array imports
 
 The texture array import configuration is critical for the shader to accept
@@ -156,6 +155,9 @@ Automated placement of light in the cluster centroids of emissive voxels:
 Lighting test:
 ![Lighting](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/Lighting.png)
 
+Staircase lights:
+![Staircase Lights](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/StaircaseLights.png)
+
 #### Occluders
 
 I made no screenshots of occluder placement, but they work similarly to collider placement.
@@ -190,3 +192,9 @@ there are no colorful shadows. They could be faked with projectors, which should
 
 With automated light placement included (no fps recorded, unfortunately, it was around 30-40):
 ![Perf. test: Lighting, 64 rooms](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/PerfLighting64.png)
+
+#### Fun bugs
+
+A bug resulted in a fancy memory garbage visualizer during shader development:
+
+![Bug: Fancy Memory Garbage Visualizer](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/BugFancyMemoryGarbage.png)

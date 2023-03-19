@@ -85,8 +85,7 @@ mesh = SubResource("CylinderMesh_vm1hr")
 surface_material_override/0 = SubResource("StandardMaterial3D_0mctm")
 
 [node name="SphereToDropShadow" type="MeshInstance3D" parent="."]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1.81692, 2.06658, -1.23307)
-visible = false
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1.91692, 2.06658, -1.23307)
 mesh = SubResource("SphereMesh_jv4d4")
 skeleton = NodePath("../Stage")
 
