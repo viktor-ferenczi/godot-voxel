@@ -3,15 +3,15 @@
 importer="2d_array_texture"
 type="CompressedTexture2DArray"
 uid="uid://c2hb5urkt16aq"
-path="res://.godot/imported/Normal.png-2b1845f307d41260cb4863e740c21363.ctexarray"
+path="res://.godot/imported/Normal.png-b597078d5895702cc9afa0b00976af4e.ctexarray"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/voxel/Examples/TorusBox/Textures/Normal.png"
-dest_files=["res://.godot/imported/Normal.png-2b1845f307d41260cb4863e740c21363.ctexarray"]
+source_file="res://addons/voxel/Examples/TorusBox/Assets/Texture/Normal.png"
+dest_files=["res://.godot/imported/Normal.png-b597078d5895702cc9afa0b00976af4e.ctexarray"]
 
 [params]
 

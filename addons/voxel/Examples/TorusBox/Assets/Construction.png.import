@@ -3,7 +3,7 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://bwrgurpn8yh1c"
-path.s3tc="res://.godot/imported/Construction.png-30a09d7e71c260bf542cc1d8a648271c.s3tc.ctex"
+path.s3tc="res://.godot/imported/Construction.png-d239d2ca96d773cfc74e34ea310794d6.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/voxel/Examples/Images/Construction.png"
-dest_files=["res://.godot/imported/Construction.png-30a09d7e71c260bf542cc1d8a648271c.s3tc.ctex"]
+source_file="res://addons/voxel/Examples/TorusBox/Assets/Construction.png"
+dest_files=["res://.godot/imported/Construction.png-d239d2ca96d773cfc74e34ea310794d6.s3tc.ctex"]
 
 [params]
 

@@ -1,14 +1,18 @@
-[gd_scene load_steps=16 format=3 uid="uid://dq60i6gq7kjhk"]
+[gd_scene load_steps=19 format=3 uid="uid://ca7lh3m7k18q3"]
 
 [ext_resource type="Environment" uid="uid://c3afpbdc12ko3" path="res://addons/voxel/Examples/Environment/Photostudio.tres" id="1_etq48"]
 [ext_resource type="Script" path="res://addons/voxel/Examples/TorusBox/TorusBox.gd" id="1_n3c0i"]
 [ext_resource type="PackedScene" uid="uid://csrg8wea6p8hh" path="res://addons/voxel/Scenes/TexturedVoxelModel.tscn" id="2_h717o"]
-[ext_resource type="Texture2D" uid="uid://cxk2icp234ia7" path="res://addons/voxel/Examples/TorusBox/Textures/Model.png" id="3_ayd2u"]
-[ext_resource type="CompressedTexture2DArray" uid="uid://dmx2s54i4vhs5" path="res://addons/voxel/Examples/TorusBox/Textures/Voxels.png" id="4_qt2sa"]
-[ext_resource type="CompressedTexture2DArray" uid="uid://bim560poosi50" path="res://addons/voxel/Examples/TorusBox/Textures/Color.png" id="5_e6yth"]
-[ext_resource type="CompressedTexture2DArray" uid="uid://r07iflxwuvt4" path="res://addons/voxel/Examples/TorusBox/Textures/Emission.png" id="6_pwl1e"]
-[ext_resource type="CompressedTexture2DArray" uid="uid://c2hb5urkt16aq" path="res://addons/voxel/Examples/TorusBox/Textures/Normal.png" id="7_d7mem"]
-[ext_resource type="CompressedTexture2DArray" uid="uid://dajl16whn53q8" path="res://addons/voxel/Examples/TorusBox/Textures/RSMA.png" id="8_ngl8p"]
+[ext_resource type="Texture2D" uid="uid://cxk2icp234ia7" path="res://addons/voxel/Examples/TorusBox/Assets/Texture/Model.png" id="3_ayd2u"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://bim560poosi50" path="res://addons/voxel/Examples/TorusBox/Assets/Texture/Color.png" id="5_e6yth"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://dmx2s54i4vhs5" path="res://addons/voxel/Examples/TorusBox/Assets/Texture/Voxel.png" id="5_n1ufy"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://r07iflxwuvt4" path="res://addons/voxel/Examples/TorusBox/Assets/Texture/Emission.png" id="6_pwl1e"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://c2hb5urkt16aq" path="res://addons/voxel/Examples/TorusBox/Assets/Texture/Normal.png" id="7_d7mem"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://dajl16whn53q8" path="res://addons/voxel/Examples/TorusBox/Assets/Texture/RSMA.png" id="8_ngl8p"]
+[ext_resource type="Texture2D" uid="uid://bwrgurpn8yh1c" path="res://addons/voxel/Examples/TorusBox/Assets/Construction.png" id="10_304vr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fnkoe"]
+albedo_texture = ExtResource("10_304vr")
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_vm1hr"]
 top_radius = 0.8
@@ -17,6 +21,9 @@ height = 0.03
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0mctm"]
 albedo_color = Color(0.4, 0.4, 0.4, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4u1rq"]
+albedo_texture = ExtResource("10_304vr")
 
 [sub_resource type="SphereMesh" id="SphereMesh_jv4d4"]
 
@@ -72,7 +79,7 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.3, 
 voxel_size = 0.01
 size_in_cubes = Vector3i(4, 5, 3)
 model_texture = ExtResource("3_ayd2u")
-voxel_textures = ExtResource("4_qt2sa")
+voxel_textures = ExtResource("5_n1ufy")
 uv_scale = 8.0
 color_textures = ExtResource("5_e6yth")
 emission_textures = ExtResource("6_pwl1e")
@@ -81,11 +88,14 @@ rsma_textures = ExtResource("8_ngl8p")
 
 [node name="Table" type="MeshInstance3D" parent="Stage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
+material_override = SubResource("StandardMaterial3D_fnkoe")
 mesh = SubResource("CylinderMesh_vm1hr")
 surface_material_override/0 = SubResource("StandardMaterial3D_0mctm")
 
 [node name="SphereToDropShadow" type="MeshInstance3D" parent="."]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 1.91692, 2.06658, -1.23307)
+visible = false
+material_override = SubResource("StandardMaterial3D_4u1rq")
 mesh = SubResource("SphereMesh_jv4d4")
 skeleton = NodePath("../Stage")
 

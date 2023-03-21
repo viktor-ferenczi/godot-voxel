@@ -1,8 +1,7 @@
-/* First voxel value which is considered to be opaque.
-Higher values are opaque, lower values are transparent.
-A voxel value of zero always signifies and empty voxel.
+/* First voxel value which is considered to be transparent.
+Lower values are opaque, except of 0 which is the empty voxel.
 */
-#define TS_FIRST_OPAQUE 1
+#define TS_FIRST_TRANSPARENT 64
 
 
 // Grid size in 16x16x16 voxel cubes
@@ -100,11 +99,9 @@ Each layer provides base color or transmittance texture for each of the
 256 possible voxel values. Voxels with a zero value are always empty,
 therefore layer zero is not used.
 
-Voxel value equal or above TS_FIRST_OPAQUE are drawn in the opaque pass.
 In case of opaque voxels this texture is interpreted as base color and the
 alpha channel is ignored.
 
-Voxel values under TS_FIRST_OPAQUE are drawn in the transparent pass.
 In case of transparent voxels the RGB component of this texture interpreted
 as color transmittance (proportion of light to pass through) and the alpha
 as density. Internal surfaces between voxels with the same transmittance
@@ -217,7 +214,7 @@ bool get_voxel(ivec3 vpos, uint layer, out ivec3 tpos, out int voxel, out vec4 c
 	// It is intentional to not set color here. The texture lookup will require
 	// the uv, so it will happen later when get_opaque_material and
 	// get_transparent_material are called.
-	opaque = voxel >= TS_FIRST_OPAQUE;
+	opaque = voxel < TS_FIRST_TRANSPARENT;
 	return voxel != 0;
 }
 

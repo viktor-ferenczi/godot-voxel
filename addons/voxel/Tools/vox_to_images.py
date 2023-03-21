@@ -1,13 +1,13 @@
 """ This conversion is a workaround until the proper Vox resource loader is working again
 
 How to use:
-- Export the Vox to slices format, then rename the PNG file as *Slices.png
+- Export the Vox to slices format, then rename the PNG file as *Slice.png
 - Export the Vox to obj format, then rename the resulting PNG file as *Palette.png
 - Run this script (see usage by running it with no parameters)
 
 For example:
 
-python VoxToBox.py 64 80 48 Slices.png Palette.png Voxels.png Model.png
+python VoxToBox.py 64 80 48 Slice.png Palette.png Voxel.png Model.png
 
 This process can convert only a single model.
 It cannot convert the PBR material properties.
@@ -20,13 +20,14 @@ import numpy as np
 import cv2
 
 
-DEBUG = False or 1
-TS_FIRST_OPAQUE = 1
+DEBUG = False
+TS_FIRST_TRANSPARENT = 64
 
 
 def main():
     if not len(sys.argv) != 7:
-        print(f'Usage: {sys.argv[0]} width height depth slices.png palette.png voxels.png model.png')
+        print(f'Usage: {sys.argv[0]} WIDTH HEIGHT DEPTH Slice.png Palette.png Voxel.png Model.png')
+        print(f'Example: {sys.argv[0]} 64 80 48 VoxExport/Slice.png VoxExport/Palette.png Texture/Voxel.png Texture/Model.png')
         sys.exit(1)
 
     width, height, depth, slices_path, palette_path, voxels_path, model_path = sys.argv[1:]
@@ -91,8 +92,8 @@ def main():
                 corner = cube[0, 0, 0]
                 has_content = np.any(cube != 0)
                 is_full = corner != 0 and np.all(cube == corner)
-                has_opaque = np.any(cube >= TS_FIRST_OPAQUE)
-                has_transparent = has_content and np.any(cube < TS_FIRST_OPAQUE)
+                has_opaque = np.any(cube < TS_FIRST_TRANSPARENT)
+                has_transparent = has_content and np.any(cube < TS_FIRST_TRANSPARENT)
                 has_emissive = False  # TODO
 
                 if has_content and not is_full:

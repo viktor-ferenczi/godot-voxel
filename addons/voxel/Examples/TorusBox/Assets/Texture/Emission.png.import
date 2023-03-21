@@ -3,7 +3,7 @@
 importer="2d_array_texture"
 type="CompressedTexture2DArray"
 uid="uid://r07iflxwuvt4"
-path.bptc="res://.godot/imported/Emission.png-49464f15f4b6ac0227aab7c1d9cae380.bptc.ctexarray"
+path.bptc="res://.godot/imported/Emission.png-f3d4619ffb72c1bc64abaa3648ad2093.bptc.ctexarray"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://addons/voxel/Examples/TorusBox/Textures/Emission.png"
-dest_files=["res://.godot/imported/Emission.png-49464f15f4b6ac0227aab7c1d9cae380.bptc.ctexarray"]
+source_file="res://addons/voxel/Examples/TorusBox/Assets/Texture/Emission.png"
+dest_files=["res://.godot/imported/Emission.png-f3d4619ffb72c1bc64abaa3648ad2093.bptc.ctexarray"]
 
 [params]
 

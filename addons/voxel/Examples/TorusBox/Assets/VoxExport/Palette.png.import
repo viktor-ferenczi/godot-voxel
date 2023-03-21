@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://7bab85mksiir"
-path="res://.godot/imported/Palette.png-1dd4a68bd7f15809bbec94247fdc002a.ctex"
+path="res://.godot/imported/Palette.png-10a725caf65656bc81df0426f6dd4f0b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/voxel/Examples/TorusBox/Textures/Palette.png"
-dest_files=["res://.godot/imported/Palette.png-1dd4a68bd7f15809bbec94247fdc002a.ctex"]
+source_file="res://addons/voxel/Examples/TorusBox/Assets/VoxExport/Palette.png"
+dest_files=["res://.godot/imported/Palette.png-10a725caf65656bc81df0426f6dd4f0b.ctex"]
 
 [params]
 
