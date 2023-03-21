@@ -94,12 +94,13 @@ void fragment() {
 							dda_voxel_face_normals(ddv, NORMALS, NORMAL, TANGENT, BINORMAL);
 
 							// UV for texturing
-							vec2 uv = dda_voxel_face_uv(ddv, hit);
+							uint face;
+							vec2 uv = dda_voxel_face_uv(ddv, hit, face);
 
 							// Material
 							vec4 rsma;
 							vec3 normal_map;
-							get_opaque_material(tpos, voxel, color, uv, ALBEDO, EMISSION, normal_map, rsma);
+							get_opaque_material(tpos, voxel, color, face, uv, ALBEDO, EMISSION, normal_map, rsma);
 							NORMAL_MAP = vec3(normal_map.xy, 0.0);
 							NORMAL_MAP_DEPTH = normal_map.z;
 							ROUGHNESS = rsma.r;

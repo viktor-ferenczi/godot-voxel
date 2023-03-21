@@ -147,6 +147,7 @@ Called only for the opaque voxels by the opaque shader.
 tpos: Texture coordinates as returned by the get_voxel function
 voxel: Voxel information as returned by the get_voxel function
 color: Voxel color as returned by the get_voxel function
+face: Voxel face hit by the ray [0..5], by face normal: -X +X -Y +Y -Z +Z
 uv: Texture UV, [0..1] covers each quad face of the voxel cube (size*size voxels)
 =>
 albedo: Surface color
@@ -156,7 +157,7 @@ rsma: Roughness, specular, metallic and ambient occlusion
 
 Called only once per ray for the first opaque voxel hit by the ray.
 */
-void get_opaque_material(ivec3 tpos, int voxel, vec4 color, vec2 uv, out vec3 albedo, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
+void get_opaque_material(ivec3 tpos, int voxel, vec4 color, uint face, vec2 uv, out vec3 albedo, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
 	albedo = color.rgb;
 
 	// Emissive materials are always rendered as transparent
@@ -175,6 +176,7 @@ tpos: Texture coordinates as returned by the get_voxel function
 voxel: Voxel information as returned by the get_voxel function
 color: Voxel color as returned by the get_voxel function
 first: True if this is the first transparent voxel encountered along the ray
+face: Voxel face hit by the ray [0..5], by face normal: -X +X -Y +Y -Z +Z
 uv: Texture UV, [0..1] covers each quad face of the voxel cube (size*size voxels)
 =>
 transmittance: Proportion of light to pass through
@@ -187,7 +189,7 @@ exits the voxel cube. Transmittance is used only once for subsequent transparent
 voxels with the same value. Surface normal_map and rsma are used only on the
 first surface hit, no need to return those if first is false.
 */
-void get_transparent_material(ivec3 tpos, int voxel, vec4 color, vec2 uv, out vec3 transmittance, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
+void get_transparent_material(ivec3 tpos, int voxel, vec4 color, uint face, vec2 uv, out vec3 transmittance, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
 	transmittance = 1.0 - color.rgb * (1.0 - color.a);
 
 	vec4 femd = texelFetch(materials, ivec2(3, voxel), 0);

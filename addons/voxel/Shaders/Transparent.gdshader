@@ -110,14 +110,15 @@ void fragment() {
 							inside = true;
 
 							// UV for texturing
-							vec2 uv = dda_voxel_face_uv(ddv, hit);
+							uint face;
+							vec2 uv = dda_voxel_face_uv(ddv, hit, face);
 
 							// Material
 							vec3 transmittance;
 							vec3 emission;
 							vec3 normal_map;
 							vec4 rsma;
-							get_transparent_material(tpos, voxel, color, uv, transmittance, emission, normal_map, rsma);
+							get_transparent_material(tpos, voxel, color, face, uv, transmittance, emission, normal_map, rsma);
 
 							// Accumulate emission on each voxel
 							totalEmission += totalTrans * emission;
