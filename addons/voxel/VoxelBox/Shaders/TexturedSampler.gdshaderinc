@@ -74,13 +74,14 @@ uniform sampler2DArray voxel_textures;
 
 /* Scaling factor for the voxel UV coordinates to control texture repetition
 
-1.0: The texture cover the side of an entire voxel cube (16x16 voxels)
-16.0: The 
+1.0: The texture covers 16x16 voxel faces (the entire voxel cube)
+4:0: The texture covers 4x4 voxel faces
+16.0: The texture covers 1x1 voxel face (single voxel cube)
 
 Anything in-between will repeat the texture more than once over the voxel cube.
 
-Leave it on the default 16.0 for games with large (1m^3) voxels where the same
-block type should looks the same everywhere.
+Leave it on the default 16.0 for "Minecraft like" games with large (1m^3)
+voxels where the same block type should look the same everywhere.
 
 Set it to a lower value between 1.0 and 8.0 for games with smaller voxels,
 where the voxel textures are expected to have a bit of variance even if they
