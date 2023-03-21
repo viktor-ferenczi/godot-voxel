@@ -29,7 +29,7 @@ be scaled by Vector3(1.0, 1.5, 3.0) in the scene to produce cubical voxels.
 """
 
 func _ready():
-	$VoxelBox.mesh = create_cube()
+	$VoxelModel.mesh = create_cube()
 
 
 func create_cube() -> ArrayMesh:

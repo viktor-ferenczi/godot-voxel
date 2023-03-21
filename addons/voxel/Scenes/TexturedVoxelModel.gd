@@ -213,7 +213,6 @@ func configure():
 		is_valid_rsma_textures
 	)
 	if not is_valid:
-		print("Please see the template texture images under addons/voxel/Examples/Templates")
 		return
 
 	var scale = voxel_size * size_in_cubes * 16
