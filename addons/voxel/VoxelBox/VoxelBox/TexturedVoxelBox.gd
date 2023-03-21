@@ -28,18 +28,18 @@ class_name TexturedVoxelBox
 		cube_map_texture = value
 		update()
 
-@export_range(1.0, 16.0, 0.125) var uv_scale: float = 16.0:
-	get:
-		return uv_scale
-	set(value):
-		uv_scale = value
-		update()
-
 @export var voxel_textures: CompressedTexture2DArray:
 	get:
 		return voxel_textures
 	set(value):
 		voxel_textures = value
+		update()
+
+@export_range(1.0, 16.0, 0.125) var uv_scale: float = 16.0:
+	get:
+		return uv_scale
+	set(value):
+		uv_scale = value
 		update()
 
 @export var color_textures: CompressedTexture2DArray:
@@ -232,8 +232,8 @@ func set_shader_parameters():
 	for shader_material in shader_materials:
 		shader_material.set_shader_parameter("size_in_cubes", size_in_cubes)
 		shader_material.set_shader_parameter("cube_map_texture", cube_map_texture)
-		shader_material.set_shader_parameter("uv_scale", uv_scale)
 		shader_material.set_shader_parameter("voxel_textures", voxel_textures)
+		shader_material.set_shader_parameter("uv_scale", uv_scale)
 		shader_material.set_shader_parameter("color_textures", color_textures)
 		shader_material.set_shader_parameter("emission_textures", emission_textures)
 		shader_material.set_shader_parameter("normal_textures", normal_textures)
