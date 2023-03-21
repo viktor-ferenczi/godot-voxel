@@ -66,7 +66,7 @@ void fragment() {
 			if(exitDepth < 0.0) {
 				for(int vsteps=0; vsteps < 49; vsteps++) {
 					ivec3 tpos;
-					int voxel;
+					uint voxel;
 					vec4 color;
 					bool opaque;
 

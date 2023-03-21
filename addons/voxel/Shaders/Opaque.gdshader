@@ -72,7 +72,7 @@ void fragment() {
 			if(exitDepth < 0.0) {
 				for(int vsteps=0; vsteps < 49; vsteps++) {
 					ivec3 tpos;
-					int voxel;
+					uint voxel;
 					vec4 color;
 					bool opaque;
 
@@ -95,7 +95,7 @@ void fragment() {
 
 							// UV for texturing
 							uint face;
-							vec2 uv = dda_voxel_face_uv(ddv, hit, face);
+							vec2 uv = dda_voxel_face_uv(ddv, size_in_cubes, hit, face);
 
 							// Material
 							vec4 rsma;

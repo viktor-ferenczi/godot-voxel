@@ -1,7 +1,30 @@
 /* First voxel value which is considered to be transparent.
 Lower values are opaque, except of 0 which is the empty voxel.
 */
-#define TS_FIRST_TRANSPARENT 64
+#define TS_FIRST_TRANSPARENT 64u
+
+
+/* Set to True to enable separate textures on voxel faces.
+It will need 6 times the number of layers in the color,
+emission, normal and rsma textures.
+
+Face indices based on the voxel's surface normal in model space:
+0: -X
+1: +X
+2: -Y
+3: +Y
+4: -Z
+5: +Z
+
+The texture layer index is then calculated:
+texture_layer_index = TS_NUMBER_OF_TEXTURES * face_index + voxel
+
+It means that the texture array contains all the textures for
+face 0, then for face 1 and so on.
+
+*/
+#define TS_SEPARATE_FACE_TEXTURES false
+#define TS_NUMBER_OF_TEXTURES 256u
 
 
 // Grid size in 16x16x16 voxel cubes
@@ -208,30 +231,30 @@ opaque: Set to true if the voxel is opaque, false if the voxel is transparent
 
 Make sure to use texelFetch to retrieve voxel information without filtering.
 */
-bool get_voxel(ivec3 vpos, uint layer, out ivec3 tpos, out int voxel, out vec4 color, out bool opaque) {
+bool get_voxel(ivec3 vpos, uint layer, out ivec3 tpos, out uint voxel, out vec4 color, out bool opaque) {
 	tpos = ivec3(vpos.x | (vpos.y << 4), vpos.z, int(layer));
-	voxel = int(texelFetch(voxel_textures, tpos, 0).r * 255.0);
+	voxel = uint(texelFetch(voxel_textures, tpos, 0).r * 255.0);
 	// It is intentional to not set color here. The texture lookup will require
 	// the uv, so it will happen later when get_opaque_material and
 	// get_transparent_material are called.
 	opaque = voxel < TS_FIRST_TRANSPARENT;
-	return voxel != 0;
+	return voxel != 0u;
 }
 
 
-/* PBR lookups shared by both the opaque and transparent passes
+/* PBR lookups shared by both the opaque and transparent passes 
 
-Memory access could be optimized by skipping any unnecessary texture lookups
-based on the voxel value. This is an exercise for the game developer, because
-it depends on the actual use case. A generic solution could be made based on
-a 256x1 R only texture encoding the textures required on one bit each for each
-of the possible voxel values.
+Please note that looking up all textures regardless of whether they are
+needed or not is not optimal. You may consider restricting these lookups based
+on voxel value or by material flag bits looked up from a small 256 pixel 
+texture which can always stay in cache with high probability.
+
 */
-void pbr_lookups(int voxel, vec2 scaled_uv, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
-	float texture_layer_index = float(voxel);
-	emission = texture(emission_textures, vec3(scaled_uv, texture_layer_index)).rgb;
-	normal_map = texture(normal_textures, vec3(scaled_uv, texture_layer_index)).rgb;
-	rsma = texture(rsma_textures, vec3(scaled_uv, texture_layer_index));
+void pbr_lookup(uint voxel, uint layer_index, vec2 scaled_uv, out vec4 color, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
+	color = texture(color_textures, vec3(scaled_uv, float(layer_index)));
+	emission = texture(emission_textures, vec3(scaled_uv, float(layer_index))).rgb;
+	normal_map = texture(normal_textures, vec3(scaled_uv, float(layer_index))).rgb;
+	rsma = texture(rsma_textures, vec3(scaled_uv, float(layer_index)));
 }
 
 
@@ -243,7 +266,7 @@ tpos: Texture coordinates as returned by the get_voxel function
 voxel: Voxel information as returned by the get_voxel function
 color: Voxel color as returned by the get_voxel function
 face: Voxel face hit by the ray [0..5], by face normal: -X +X -Y +Y -Z +Z
-uv: Texture UV, [0..1] covers each quad face of the voxel cube (size*size voxels)
+uv: Texture UV, [0..1] covers each quad face of the voxel cube (16x16 voxels)
 =>
 albedo: Surface color
 emission: Color of emitted light, all zero for no emission
@@ -252,10 +275,16 @@ rsma: Roughness, specular, metallic and ambient occlusion
 
 Called only once per ray for the first opaque voxel hit by the ray.
 */
-void get_opaque_material(ivec3 tpos, int voxel, vec4 color, uint face, vec2 uv, out vec3 albedo, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
+void get_opaque_material(ivec3 tpos, uint voxel, vec4 color, uint face, vec2 uv, out vec3 albedo, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
 	vec2 scaled_uv = uv * uv_scale;
-	albedo = texture(color_textures, vec3(scaled_uv, float(voxel))).rgb;
-	pbr_lookups(voxel, scaled_uv, emission, normal_map, rsma);
+#if TS_SEPARATE_FACE_TEXTURES
+	uint layer_index = TS_NUMBER_OF_TEXTURES * face + voxel;
+#else
+	uint layer_index = voxel;
+#endif
+
+	pbr_lookup(voxel, layer_index, scaled_uv, color, emission, normal_map, rsma);
+	albedo = color.rgb;
 }
 
 
@@ -268,7 +297,7 @@ voxel: Voxel information as returned by the get_voxel function
 color: Voxel color as returned by the get_voxel function
 first: True if this is the first transparent voxel encountered along the ray
 face: Voxel face hit by the ray [0..5], by face normal: -X +X -Y +Y -Z +Z
-uv: Texture UV, [0..1] covers each quad face of the voxel cube (size*size voxels)
+uv: Texture UV, [0..1] covers each quad face of the voxel cube (16x16 voxels)
 =>
 transmittance: Proportion of light to pass through
 emission: Emissive color (adds up from voxels behind each other)
@@ -280,9 +309,13 @@ exits the voxel cube. Transmittance is used only once for subsequent transparent
 voxels with the same value. Surface normal_map and rsma are used only on the
 first surface hit, no need to return those if first is false.
 */
-void get_transparent_material(ivec3 tpos, int voxel, vec4 color, uint face, vec2 uv, out vec3 transmittance, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
-	vec2 scaled_uv = uv * uv_scale;
-	color = texture(color_textures, vec3(scaled_uv, float(voxel)));
+void get_transparent_material(ivec3 tpos, uint voxel, vec4 color, uint face, vec2 uv, out vec3 transmittance, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
+#if TS_SEPARATE_FACE_TEXTURES
+	uint layer_index = TS_NUMBER_OF_TEXTURES * face + voxel;
+#else
+	uint layer_index = voxel;
+#endif
+
+	pbr_lookup(voxel, layer_index, uv * uv_scale, color, emission, normal_map, rsma);
 	transmittance = 1.0 - color.rgb * (1.0 - color.a);
-	pbr_lookups(voxel, scaled_uv, emission, normal_map, rsma);
 }
