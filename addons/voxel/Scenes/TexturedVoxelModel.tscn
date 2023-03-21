@@ -1,10 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://dk55lwllihbkn"]
+[gd_scene load_steps=9 format=3 uid="uid://csrg8wea6p8hh"]
 
-[ext_resource type="Script" path="res://addons/voxel/VoxelBox/VoxelBox/TexturedVoxelBox.gd" id="1_ivamt"]
-[ext_resource type="ArrayMesh" uid="uid://bxy6j5f7ja3gv" path="res://addons/voxel/VoxelBox/Mesh/VoxelBox.tres" id="2_glvvd"]
-[ext_resource type="Shader" path="res://addons/voxel/VoxelBox/Shaders/Opaque.gdshader" id="3_w8u84"]
-[ext_resource type="Shader" path="res://addons/voxel/VoxelBox/Shaders/Transparent.gdshader" id="4_7t30s"]
-[ext_resource type="Shader" path="res://addons/voxel/VoxelBox/Shaders/Shadow.gdshader" id="5_xnx2s"]
+[ext_resource type="Script" path="res://addons/voxel/Scenes/TexturedVoxelModel.gd" id="1_ivamt"]
+[ext_resource type="ArrayMesh" uid="uid://bxy6j5f7ja3gv" path="res://addons/voxel/Mesh/VoxelModel.tres" id="2_glvvd"]
+[ext_resource type="Shader" path="res://addons/voxel/Shaders/Opaque.gdshader" id="3_w8u84"]
+[ext_resource type="Shader" path="res://addons/voxel/Shaders/Transparent.gdshader" id="4_7t30s"]
+[ext_resource type="Shader" path="res://addons/voxel/Shaders/Shadow.gdshader" id="5_xnx2s"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gyxk6"]
 resource_local_to_scene = true
@@ -27,7 +27,7 @@ shader = ExtResource("5_xnx2s")
 shader_parameter/size_in_cubes = null
 shader_parameter/uv_scale = 16.0
 
-[node name="TexturedVoxelBox" type="StaticBody3D"]
+[node name="TexturedVoxelModel" type="Node3D"]
 script = ExtResource("1_ivamt")
 
 [node name="Opaque" type="MeshInstance3D" parent="."]

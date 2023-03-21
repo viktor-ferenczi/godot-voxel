@@ -41,7 +41,7 @@ If the voxels are changed at runtime, then the cube map has to be updated
 to reflect the modified contents of the affected voxel cubes.
 
 */
-uniform sampler2D cube_map_texture;
+uniform sampler2D model_texture;
 
 
 /* Voxel data as Texture2DArray for the 2nd level DDA
@@ -185,7 +185,7 @@ has_opaque: Set to true if the cube contains any opaque voxels
 */
 bool get_cube(ivec3 pos, out uint layer, out bool has_opaque) {
 	ivec2 tpos = ivec2(pos.x, pos.y | (pos.z << 4));
-	uvec4 cube = uvec4(texelFetch(cube_map_texture, tpos, 0) * 255.0);
+	uvec4 cube = uvec4(texelFetch(model_texture, tpos, 0) * 255.0);
 	layer = cube.r | (cube.g << 8u);
 	has_opaque = (cube.b & 4u) != 0u;
 	return (cube.b & 1u) != 0u;

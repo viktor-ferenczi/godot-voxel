@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://byfh7hishb1gx"]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://addons/voxel/Builders/VoxelMeshBuilder.gd" id="1_v8rhh"]
-[ext_resource type="ArrayMesh" uid="uid://bxy6j5f7ja3gv" path="res://addons/voxel/VoxelBox/Mesh/VoxelBox.tres" id="2_6j0o5"]
+[ext_resource type="ArrayMesh" uid="uid://bxy6j5f7ja3gv" path="res://addons/voxel/Mesh/VoxelModel.tres" id="2_6j0o5"]
 
 [node name="VoxelBoxBuilder" type="Node3D"]
 script = ExtResource("1_v8rhh")

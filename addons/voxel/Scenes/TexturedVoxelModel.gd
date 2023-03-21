@@ -1,9 +1,8 @@
 @tool
 extends Node3D
-class_name TexturedVoxelBox
+class_name TexturedVoxelModel
 
 
-# Voxel size to achieve (voxels are cubes, so the size is the same along each axis)
 @export_range(0.01, 10.0, 0.01, "or_greater", "or_lesser") var voxel_size: float = 1.0:
 	get:
 		return voxel_size
@@ -11,7 +10,6 @@ class_name TexturedVoxelBox
 		voxel_size = value
 		update()
 
-# See the texture parameters defined in TexturedSampler shader include
 @export var size_in_cubes: Vector3i:
 	get:
 		return size_in_cubes
@@ -19,13 +17,11 @@ class_name TexturedVoxelBox
 		size_in_cubes = value
 		update()
 
-# FIXME: Bad naming. Can be confused with Godot's Cubemap feature,
-# while this is entirely different. Rename to something else.
-@export var cube_map_texture: Texture2D:
+@export var model_texture: Texture2D:
 	get:
-		return cube_map_texture
+		return model_texture
 	set(value):
-		cube_map_texture = value
+		model_texture = value
 		update()
 
 @export var voxel_textures: CompressedTexture2DArray:
@@ -108,7 +104,7 @@ func _ready():
 func clear():
 	is_valid = false
 	size_in_cubes = Vector3i(0, 0, 0)
-	cube_map_texture = null
+	model_texture = null
 	voxel_textures = null
 	color_textures = null
 	emission_textures = null
@@ -121,7 +117,7 @@ func configure():
 	is_valid = false
 
 	var is_incomplete = (
-		cube_map_texture == null or
+		model_texture == null or
 		voxel_textures == null or
 		color_textures == null or
 		emission_textures == null or
@@ -139,16 +135,16 @@ func configure():
 		print("%s: Invalid size_in_cubes, must be between (1, 1, 1) and (16, 16, 16)" % [name])
 		return
 
-	var is_valid_cube_map = (
+	var is_valid_model = (
 		size_in_cubes[size_in_cubes.min_axis_index()] >= 1 and
 		size_in_cubes[size_in_cubes.max_axis_index()] <= 16 and
-		cube_map_texture != null and
-		#cube_map_texture.get_format() == Image.FORMAT_RGB8 and
-		cube_map_texture.get_width() == 16 and
-		cube_map_texture.get_height() == 256
+		model_texture != null and
+		#model_texture.get_format() == Image.FORMAT_RGB8 and
+		model_texture.get_width() == 16 and
+		model_texture.get_height() == 256
 	)
-	if not is_valid_cube_map:
-		print("%s: Invalid cube_map_texture, must be 16x256 FORMAT_RGB8" % [name])
+	if not is_valid_model:
+		print("%s: Invalid model_texture, must be 16x256 FORMAT_RGB8" % [name])
 
 	var cube_count = size_in_cubes.x * size_in_cubes.y * size_in_cubes.z
 	var is_valid_voxel_textures = (
@@ -209,7 +205,7 @@ func configure():
 		print("%s: Invalid rsma_textures, must be FORMAT_RGBA8 imported as 2..256 layers" % [name])
 
 	is_valid = (
-		is_valid_cube_map and
+		is_valid_model and
 		is_valid_voxel_textures and
 		is_valid_color_textures and
 		is_valid_emission_textures and
@@ -231,7 +227,7 @@ func configure():
 func set_shader_parameters():
 	for shader_material in shader_materials:
 		shader_material.set_shader_parameter("size_in_cubes", size_in_cubes)
-		shader_material.set_shader_parameter("cube_map_texture", cube_map_texture)
+		shader_material.set_shader_parameter("model_texture", model_texture)
 		shader_material.set_shader_parameter("voxel_textures", voxel_textures)
 		shader_material.set_shader_parameter("uv_scale", uv_scale)
 		shader_material.set_shader_parameter("color_textures", color_textures)

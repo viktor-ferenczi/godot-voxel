@@ -2,30 +2,24 @@ shader_type spatial;
 render_mode skip_vertex_transform;
 render_mode cull_front;
 
-#include "res://addons/voxel/VoxelBox/Shaders/DDA.gdshaderinc"
-#include "res://addons/voxel/VoxelBox/Shaders/Config.gdshaderinc"
+#include "res://addons/voxel/Shaders/DDA.gdshaderinc"
+#include "res://addons/voxel/Shaders/Config.gdshaderinc"
 
 #if USE_TEXTURED_SAMPLER
-#include "res://addons/voxel/VoxelBox/Shaders/TexturedSampler.gdshaderinc"
+#include "res://addons/voxel/Shaders/TexturedSampler.gdshaderinc"
 #endif
 
 #if USE_VOX_SAMPLER
-#include "res://addons/voxel/VoxelBox/Shaders/VoxSampler.gdshaderinc"
+#include "res://addons/voxel/Shaders/VoxSampler.gdshaderinc"
 #endif
 
 varying flat mat4 _MODELVIEW_MATRIX;
-varying flat mat3 NORMALS;
 varying flat vec3 SIZE_IN_CUBES_REC;
 varying smooth vec3 BACK;
 varying smooth vec3 RAY;
 
 void vertex() {
 	_MODELVIEW_MATRIX = MODELVIEW_MATRIX;
-
-	// Surface normals in view space
-	NORMALS[0] = normalize(MODELVIEW_MATRIX[0].xyz);
-	NORMALS[1] = normalize(MODELVIEW_MATRIX[1].xyz);
-	NORMALS[2] = normalize(MODELVIEW_MATRIX[2].xyz);
 
 	// Precalculate reciprocal
 	SIZE_IN_CUBES_REC = 1.0 / vec3(size_in_cubes);
@@ -89,23 +83,6 @@ void fragment() {
 						// Consider only voxels in front of the screen
 						if (linearDepth < 0.0) {
 							DEPTH = depth;
-
-							// Surface normals
-							dda_voxel_face_normals(ddv, NORMALS, NORMAL, TANGENT, BINORMAL);
-
-							// UV for texturing
-							vec2 uv = dda_voxel_face_uv(ddv, hit);
-
-							// Material
-							vec4 rsma;
-							vec3 normal_map;
-							get_opaque_material(tpos, voxel, color, uv, ALBEDO, EMISSION, normal_map, rsma);
-							NORMAL_MAP = vec3(normal_map.xy, 0.0);
-							NORMAL_MAP_DEPTH = normal_map.z;
-							ROUGHNESS = rsma.r;
-							SPECULAR = rsma.g;
-							METALLIC = rsma.b;
-							AO = rsma.a;
 
 							// Stop the ray on the first opaque surface
 							found = true;

@@ -3,15 +3,15 @@ render_mode skip_vertex_transform;
 render_mode depth_draw_always;
 render_mode cull_front;
 
-#include "res://addons/voxel/VoxelBox/Shaders/DDA.gdshaderinc"
-#include "res://addons/voxel/VoxelBox/Shaders/Config.gdshaderinc"
+#include "res://addons/voxel/Shaders/DDA.gdshaderinc"
+#include "res://addons/voxel/Shaders/Config.gdshaderinc"
 
 #if USE_TEXTURED_SAMPLER
-#include "res://addons/voxel/VoxelBox/Shaders/TexturedSampler.gdshaderinc"
+#include "res://addons/voxel/Shaders/TexturedSampler.gdshaderinc"
 #endif
 
 #if USE_VOX_SAMPLER
-#include "res://addons/voxel/VoxelBox/Shaders/VoxSampler.gdshaderinc"
+#include "res://addons/voxel/Shaders/VoxSampler.gdshaderinc"
 #endif
 
 varying flat mat4 _MODELVIEW_MATRIX;

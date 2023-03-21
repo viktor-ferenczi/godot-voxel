@@ -7,7 +7,7 @@ How to use:
 
 For example:
 
-python VoxToBox.py 64 80 48 Slices.png Palette.png Voxels.png CubeMap.png
+python VoxToBox.py 64 80 48 Slices.png Palette.png Voxels.png Model.png
 
 This process can convert only a single model.
 It cannot convert the PBR material properties.
@@ -26,10 +26,10 @@ TS_FIRST_OPAQUE = 1
 
 def main():
     if not len(sys.argv) != 7:
-        print(f'Usage: {sys.argv[0]} width height depth slices.png palette.png voxels.png cube_map.png')
+        print(f'Usage: {sys.argv[0]} width height depth slices.png palette.png voxels.png model.png')
         sys.exit(1)
 
-    width, height, depth, slices_path, palette_path, voxels_path, cubemap_path = sys.argv[1:]
+    width, height, depth, slices_path, palette_path, voxels_path, model_path = sys.argv[1:]
 
     width = int(width)
     height = int(height)
@@ -82,7 +82,7 @@ def main():
 
     cv2.imwrite(voxels_path, voxels.reshape((cc * 16, 256, 1)))
 
-    cube_map: np.ndarray = np.zeros((16, 16, 16, 3), np.uint8)
+    model: np.ndarray = np.zeros((16, 16, 16, 3), np.uint8)
     free_layer = 0
     for x in range(d):
         for y in range(h):
@@ -96,11 +96,11 @@ def main():
                 has_emissive = False  # TODO
 
                 if has_content and not is_full:
-                    cube_map[x, y, z, 0] = free_layer & 255
-                    cube_map[x, y, z, 1] = free_layer >> 8
+                    model[x, y, z, 0] = free_layer & 255
+                    model[x, y, z, 1] = free_layer >> 8
                     free_layer += 1
 
-                cube_map[x, y, z, 2] = (
+                model[x, y, z, 2] = (
                     int(has_content) +
                     2 * int(is_full) +
                     4 * int(has_opaque) +
@@ -108,14 +108,14 @@ def main():
                     16 * int(has_emissive)
                 )
 
-    cube_map_img = cube_map.reshape((256, 16, 3))[:, :, ::-1]
+    model_img = model.reshape((256, 16, 3))[:, :, ::-1]
 
     if DEBUG:
-        print("cube_map =", cube_map[:d, :h, :w])
-        cv2.imshow("cube_map", normalize(cube_map_img))
+        print("model =", model[:d, :h, :w])
+        cv2.imshow("model", normalize(model_img))
         cv2.waitKey()
 
-    cv2.imwrite(cubemap_path, cube_map_img)
+    cv2.imwrite(model_path, model_img)
 
     print(f"Size in cubes: {w}x{h}x{d}")
 
