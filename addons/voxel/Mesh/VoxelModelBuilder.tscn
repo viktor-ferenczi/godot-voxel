@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://addons/voxel/Builders/VoxelMeshBuilder.gd" id="1_v8rhh"]
+[ext_resource type="ArrayMesh" uid="uid://bxy6j5f7ja3gv" path="res://addons/voxel/Mesh/VoxelModel.tres" id="2_6j0o5"]
+
+[node name="VoxelBoxBuilder" type="Node3D"]
+script = ExtResource("1_v8rhh")
+
+[node name="VoxelBox" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = ExtResource("2_6j0o5")
+metadata/_edit_lock_ = true
