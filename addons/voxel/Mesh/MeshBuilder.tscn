@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://clyxd0p7tb3nx"]
+
+[ext_resource type="Script" path="res://addons/voxel/Mesh/MeshBuilder.gd" id="1_y2ep3"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_1ah3r"]
+_surfaces = [{
+"aabb": AABB(0, 0, 0, 1, 1, 1),
+"format": 4097,
+"index_count": 14,
+"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 1, 0, 5, 0, 0, 0, 6, 0, 2, 0, 7, 0, 4, 0, 6, 0, 5, 0),
+"primitive": 4,
+"vertex_count": 8,
+"vertex_data": PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 0)
+}]
+
+[node name="VoxelModelBuilder" type="Node3D"]
+script = ExtResource("1_y2ep3")
+
+[node name="VoxelModel" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+mesh = SubResource("ArrayMesh_1ah3r")
+metadata/_edit_lock_ = true
