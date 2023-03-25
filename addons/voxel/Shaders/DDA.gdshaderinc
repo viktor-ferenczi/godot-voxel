@@ -81,9 +81,9 @@ vec3 dda_voxel_face_hit(const DDA dda, vec3 res_rec) {
 
 
 // Returns UV texture coordinates by hit point for use on the voxel face
-vec2 dda_voxel_face_uv(const DDA dda, ivec3 size_in_cubes, const vec3 hit, out uint face) {
-	vec3 shit = hit * vec3(size_in_cubes);
-	vec3 sinv = vec3(size_in_cubes) - shit;
+vec2 dda_voxel_face_uv(const DDA dda, ivec3 model_size, const vec3 hit, out uint face) {
+	vec3 shit = hit * vec3(model_size);
+	vec3 sinv = vec3(model_size) - shit;
 
 	if (dda.mask.x) {
 		face = dda.ray.x < 0.0 ? 1u : 0u;

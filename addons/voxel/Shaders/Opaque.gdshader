@@ -15,7 +15,7 @@ render_mode cull_front;
 
 varying flat mat4 _MODELVIEW_MATRIX;
 varying flat mat3 NORMALS;
-varying flat vec3 SIZE_IN_CUBES_REC;
+varying flat vec3 MODEL_SIZE_REC;
 varying smooth vec3 BACK;
 varying smooth vec3 RAY;
 
@@ -28,7 +28,7 @@ void vertex() {
 	NORMALS[2] = normalize(MODELVIEW_MATRIX[2].xyz);
 
 	// Precalculate reciprocal
-	SIZE_IN_CUBES_REC = 1.0 / vec3(size_in_cubes);
+	MODEL_SIZE_REC = 1.0 / vec3(model_size);
 
 	// Voxel coordinates are encoded as interpolated vertex coordinates
 	BACK = VERTEX;
@@ -48,7 +48,7 @@ void fragment() {
 
 	// 3D line drawing along 16x16x16 voxel cubes inside the whole voxel model
 	DDA ddc;
-	dda_init(ddc, size_in_cubes, front, ray, ray_rec);
+	dda_init(ddc, model_size, front, ray, ray_rec);
 
 	bool found = false;
 	bool no_more_cubes = false;
@@ -62,10 +62,10 @@ void fragment() {
 			// 3D line drawing along individual voxels inside the 16x16x16 voxel cube
 			DDA ddv;
 			vec3 origin;
-			dda_init_inner(ddv, ddc, size_in_cubes, SIZE_IN_CUBES_REC, ray, ray_rec, origin);
+			dda_init_inner(ddv, ddc, model_size, MODEL_SIZE_REC, ray, ray_rec, origin);
 
 			no_more_cubes = dda_step(ddc);
-			vec3 exit = dda_voxel_face_hit(ddc, SIZE_IN_CUBES_REC);
+			vec3 exit = dda_voxel_face_hit(ddc, MODEL_SIZE_REC);
 			float exitDepth;
 			calc_depth(exit, PROJECTION_MATRIX, _MODELVIEW_MATRIX, exitDepth);
 
@@ -80,7 +80,7 @@ void fragment() {
 					if (get_voxel(ddv.position, layer, tpos, voxel, color, opaque) && opaque) {
 
 						// Ray intersection with the voxel's face (plane) in model coordinates
-						vec3 hit = origin + dda_voxel_face_hit(ddv, vec3(1.0 / 16.0)) * SIZE_IN_CUBES_REC;
+						vec3 hit = origin + dda_voxel_face_hit(ddv, vec3(1.0 / 16.0)) * MODEL_SIZE_REC;
 
 						// Depth for intersection and lighting
 						float linearDepth;
@@ -95,7 +95,7 @@ void fragment() {
 
 							// UV for texturing
 							uint face;
-							vec2 uv = dda_voxel_face_uv(ddv, size_in_cubes, hit, face);
+							vec2 uv = dda_voxel_face_uv(ddv, model_size, hit, face);
 
 							// Material
 							vec4 rsma;

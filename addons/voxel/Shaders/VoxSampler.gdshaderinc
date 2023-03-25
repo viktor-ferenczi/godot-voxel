@@ -1,13 +1,14 @@
-// Grid size in 16x16x16 voxel cubes
-uniform ivec3 size_in_cubes;
+// Model size in 16x16x16 voxel cubes
+uniform ivec3 model_size;
 
 
-/* Voxel cube information for the 1st level DDA
-Format: RGBA8
-Size: 16 x 256
+/* Model information for the 1st level DDA
 
-Each pixel in the cube map corresponds to a 16x16x16
-voxel cube. Each voxel cube contains 16x16x16 voxels,
+Format: RGB8
+Size: 256 x 16
+
+Each pixel corresponds to a 16x16x16 voxel cube. 
+Each voxel cube contains 16x16x16 voxels,
 therefore the maximum voxel resolution is 256x256x256.
 
 Two levels of DDA is used as an optimization to skip
