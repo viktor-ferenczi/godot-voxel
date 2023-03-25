@@ -84,7 +84,7 @@ def main():
     cv2.imwrite(voxels_path, voxels.reshape((cc * 16, 256, 1)))
 
     model: np.ndarray = np.zeros((16, 16, 16, 3), np.uint8)
-    free_layer = 0
+    layer_index = 0
     for x in range(d):
         for y in range(h):
             for z in range(w):
@@ -92,14 +92,15 @@ def main():
                 corner = cube[0, 0, 0]
                 has_content = np.any(cube != 0)
                 is_full = corner != 0 and np.all(cube == corner)
-                has_opaque = np.any(cube < TS_FIRST_TRANSPARENT)
-                has_transparent = has_content and np.any(cube < TS_FIRST_TRANSPARENT)
+                has_opaque = True  # TODO
+                has_transparent = False  # TODO
                 has_emissive = False  # TODO
 
-                if has_content and not is_full:
-                    model[x, y, z, 0] = free_layer & 255
-                    model[x, y, z, 1] = free_layer >> 8
-                    free_layer += 1
+                # FIXME: Condition disabled, empty cubes break 1st level DDA, why?
+                if 1 or (has_content and not is_full):
+                    model[x, y, z, 0] = layer_index & 255
+                    model[x, y, z, 1] = layer_index >> 8
+                    layer_index += 1
 
                 model[x, y, z, 2] = (
                     int(has_content) +

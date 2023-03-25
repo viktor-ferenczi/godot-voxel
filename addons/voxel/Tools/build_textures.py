@@ -73,12 +73,12 @@ def new_atlas(res: int, count: int, channels: np.ndarray):
     return np.zeros((rows * res, cols * res, channels.size), np.uint8)
 
 
-def draw_red_x(img: np.ndarray):
-    rgb = img[:, :, :3]
-    h, w = img.shape[:2]
-    cv2.rectangle(rgb, (1, 1), (w - 2, h - 2), (255, 0, 0), 3)
-    cv2.line(rgb, (0, 0), (w - 1, h - 1), (255, 0, 0), 3)
-    cv2.line(rgb, (w - 1, 0), (0, h - 1), (255, 0, 0), 3)
+def draw_red_x(r: int) -> np.ndarray:
+    x = np.zeros((r, r, 3), np.uint8)
+    cv2.rectangle(x, (1, 1), (r - 2, r - 2), (255, 0, 0), 3)
+    cv2.line(x, (0, 0), (r - 1, r - 1), (255, 0, 0), 3)
+    cv2.line(x, (r - 1, 0), (0, r - 1), (255, 0, 0), 3)
+    return x
 
 
 def write_texture(path, a):
@@ -222,6 +222,8 @@ class Palette:
         self.normal_atlas: Optional[np.ndarray] = None
         self.rsma_atlas: Optional[np.ndarray] = None
 
+        self.red_x = draw_red_x(res)
+
     def process(self):
         materials = self.palette_json["materials"]
         layers, flags = self.load_materials(materials)
@@ -266,29 +268,29 @@ class Palette:
             if mat.has_color:
                 color[:] = mat.color
             else:
-                draw_red_x(color)
+                color[:, :, :3] = self.red_x
 
             emission = self.emission_atlas[y:y + res, x:x + res]
             if mat.has_emission:
                 emission[:] = mat.emission[:, :, :3]
             else:
-                draw_red_x(emission)
+                emission[:] = self.red_x
 
             normal = self.normal_atlas[y:y + res, x:x + res]
             if mat.has_normal:
                 normal[:] = mat.normal[:, :, :3]
             else:
-                draw_red_x(normal)
+                normal[:] = self.red_x
 
             rsma = self.rsma_atlas[y:y + res, x:x + res]
             if mat.has_rsma:
                 rsma[:] = mat.rsma
             else:
-                draw_red_x(rsma)
+                rsma[:, :, :3] = self.red_x
 
             if mat.has_any:
-                layers[name] = len(self.color_textures)
                 flags[name] = mat.flags
+                layers[name] = len(self.color_textures)
                 self.color_textures.append(color)
                 self.emission_textures.append(emission)
                 self.normal_textures.append(normal)
