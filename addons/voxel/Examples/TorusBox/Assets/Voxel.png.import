@@ -2,16 +2,16 @@
 
 importer="2d_array_texture"
 type="CompressedTexture2DArray"
-uid="uid://dmx2s54i4vhs5"
-path="res://.godot/imported/Voxel.png-1e36fde1fd628b3c8368e1de14e21071.ctexarray"
+uid="uid://ddogs0tsovu8f"
+path="res://.godot/imported/Voxel.png-f3293443e1ac46964a6fbb650170bf76.ctexarray"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/voxel/Examples/TorusBox/Assets/Texture/Voxel.png"
-dest_files=["res://.godot/imported/Voxel.png-1e36fde1fd628b3c8368e1de14e21071.ctexarray"]
+source_file="res://addons/voxel/Examples/TorusBox/Assets/Voxel.png"
+dest_files=["res://.godot/imported/Voxel.png-f3293443e1ac46964a6fbb650170bf76.ctexarray"]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/mode=3
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
-compress/channel_pack=0
+compress/channel_pack=1
 mipmaps/generate=false
 mipmaps/limit=-1
 slices/horizontal=1

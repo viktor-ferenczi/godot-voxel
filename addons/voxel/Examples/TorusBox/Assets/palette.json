@@ -1,0 +1,8 @@
+{
+  "materials": {
+    "001": ["Metal-Bronze"],
+    "002": ["Marble-Green"],
+    "003": ["Metal-Gold"],
+    "004": ["Metal-Silver"]
+  }
+}

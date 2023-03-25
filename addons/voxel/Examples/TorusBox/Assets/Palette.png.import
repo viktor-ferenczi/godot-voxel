@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxk2icp234ia7"
-path="res://.godot/imported/Model.png-1c293c1ffbdc7a9f348c867764156219.ctex"
+uid="uid://d3teuqnoaxljr"
+path="res://.godot/imported/Palette.png-12a2bbf2ec3e4813402ecc2552a6ae53.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://addons/voxel/Examples/TorusBox/Assets/Texture/Model.png"
-dest_files=["res://.godot/imported/Model.png-1c293c1ffbdc7a9f348c867764156219.ctex"]
+source_file="res://addons/voxel/Examples/TorusBox/Assets/Palette.png"
+dest_files=["res://.godot/imported/Palette.png-12a2bbf2ec3e4813402ecc2552a6ae53.ctex"]
 
 [params]
 
@@ -20,7 +20,7 @@ compress/high_quality=false
 compress/lossy_quality=0.7
 compress/hdr_compression=1
 compress/normal_map=2
-compress/channel_pack=0
+compress/channel_pack=1
 mipmaps/generate=false
 mipmaps/limit=-1
 roughness/mode=1
