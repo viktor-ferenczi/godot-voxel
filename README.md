@@ -123,10 +123,7 @@ ramdisk contents are lost on the next OS reboot.
 
 ## Plans
 
-* Rename Model to something else, because it can be confused with Godot's Cubemap feature (which is unrelated)
 * Resurrect the Vox resource loader
-* Add support for different textures on each side of the voxel
-* Clean up the Python texture atlas pre-processing code
 * Clean up and add the automated placement of
   * Lights to make use of SDFGI
   * Occluders to reduce overdraw
