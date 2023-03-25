@@ -225,7 +225,10 @@ class Palette:
     def process(self):
         materials = self.palette_json["materials"]
         layers, flags = self.load_materials(materials)
+
         self.fill_palette(materials, layers, flags)
+        self.verify_palette()
+
         write_texture(self.palette_png_path, self.palette)
         write_texture(self.color_png_path, self.color_atlas)
         write_texture(self.emission_png_path, self.emission_atlas)
@@ -311,6 +314,13 @@ class Palette:
                 layer = layers.get(name, 0)
                 flag = flags.get(name, 0)
                 self.palette[voxel, i] = [layer & 255, layer >> 8, flag]
+
+    def verify_palette(self):
+        opaque_counts = np.sum(self.palette[:, :, 2] & 1, axis=1, dtype=np.uint8)
+        mixed_opaque_transparent = np.logical_and(opaque_counts > 0, opaque_counts < 6)
+        if np.any(mixed_opaque_transparent):
+            print('ERROR: Palette entries with mixed opaque and transparent sides:', repr(list(np.nonzero(mixed_opaque_transparent)[0])))
+            sys.exit(1)
 
 
 def main():
