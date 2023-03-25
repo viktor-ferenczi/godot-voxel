@@ -79,6 +79,7 @@ transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.3, -0.25, 0.4)
 voxel_size = 0.01
 uv_scale = 1.0
+model_size = Vector3i(4, 5, 3)
 model_texture = ExtResource("4_7rnav")
 voxel_textures = ExtResource("5_3w17g")
 palette_texture = ExtResource("5_ltxql")

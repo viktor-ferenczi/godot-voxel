@@ -1,34 +1,36 @@
-/* First voxel value which is considered to be transparent.
-Lower values are opaque, except of 0 which is the empty voxel.
+// Palette flags
+const uint IS_OPAQUE = 1u;
+const uint HAS_COLOR = 2u;
+const uint HAS_EMISSION = 4u;
+const uint HAS_NORMAL = 8u;
+const uint HAS_RSMA = 16u;
+
+
+/* Scaling factor for the voxel UV coordinates to control texture repetition
+
+1.0: The texture covers 16x16 voxel faces (the entire voxel cube)
+4:0: The texture covers 4x4 voxel faces
+16.0: The texture covers 1x1 voxel face (single voxel cube)
+
+Anything in-between will repeat the texture more than once over the voxel cube.
+
+Leave it on the default 16.0 for "Minecraft like" games with large (1m^3)
+voxels where the same block type should look the same everywhere.
+
+Set it to a lower value between 1.0 and 8.0 for games with smaller voxels,
+where the voxel textures are expected to have a bit of variance even if they
+are of the same type (stone, rusty metal, tiled floor).
+
 */
-#define TS_FIRST_TRANSPARENT 64u
+uniform float uv_scale = 16.0;
 
 
-/* Set to True to enable separate textures on voxel faces.
-It will need 6 times the number of layers in the color,
-emission, normal and rsma textures.
+/* Model size in voxel cubes
 
-Face indices based on the voxel's surface normal in model space:
-0: -X
-1: +X
-2: -Y
-3: +Y
-4: -Z
-5: +Z
-
-The texture layer index is then calculated:
-texture_layer_index = TS_NUMBER_OF_TEXTURES * face_index + voxel
-
-It means that the texture array contains all the textures for
-face 0, then for face 1 and so on.
+Each voxel cube contains 16x16x16 voxels.
 
 */
-#define TS_SEPARATE_FACE_TEXTURES false
-#define TS_NUMBER_OF_TEXTURES 256u
-
-
-// Grid size in 16x16x16 voxel cubes
-uniform ivec3 size_in_cubes;
+uniform ivec3 model_size;
 
 
 /* Voxel cube information for the 1st level DDA
@@ -94,29 +96,32 @@ overhead from CPU to GPU memory.
 uniform sampler2DArray voxel_textures;
 
 
-/* Scaling factor for the voxel UV coordinates to control texture repetition
+/* Material palette
 
-1.0: The texture covers 16x16 voxel faces (the entire voxel cube)
-4:0: The texture covers 4x4 voxel faces
-16.0: The texture covers 1x1 voxel face (single voxel cube)
+Format: RGB8
+Size: 6 x 256
 
-Anything in-between will repeat the texture more than once over the voxel cube.
+Each row corresponds to a voxel value. The first row is unused,
+since the zero value represents the empty voxel.
 
-Leave it on the default 16.0 for "Minecraft like" games with large (1m^3)
-voxels where the same block type should look the same everywhere.
+Each row contains 6 pixels, one for each side of the voxel.
 
-Set it to a lower value between 1.0 and 8.0 for games with smaller voxels,
-where the voxel textures are expected to have a bit of variance even if they
-are of the same type (stone, rusty metal, tiled floor).
+RG: Texture layer index
+B: Bit flags:
+Bit 0: 1 if opaque, 0 if transparent
+Bit 1: 1 if has color texture, 0 if transparent
+Bit 2: 1 if has emission
+Bit 3: 1 if has normal map
+Bit 4: 1 if has RSMA
 
 */
-uniform float uv_scale = 16.0;
+uniform sampler2D palette_texture;
 
 
 /* Voxel face base color and transmittance textures
 
 Format: RGBA8
-Size: 256 layers of any size
+Size: 1..256 layers of any size
 
 Each layer provides base color or transmittance texture for each of the
 256 possible voxel values. Voxels with a zero value are always empty,
@@ -137,7 +142,7 @@ uniform sampler2DArray color_textures: source_color;
 /* Voxel face emission
 
 Format: RGB8
-Size: 256 layers of any size
+Size: 1..256 layers of any size
 
 Light emitted from the opaque voxel surface or from inside transparent
 voxel interiors. The emissive color adds up from the subsequent transparent
@@ -162,7 +167,7 @@ uniform sampler2DArray emission_textures: source_color;
 /* Voxel face normal map
 
 Format: RGB8
-Size: 256 layers of any size
+Size: 1..256 layers of any size
 
 RG: Normal map X and Y values
 B: Normal map depth
@@ -180,7 +185,7 @@ uniform sampler2DArray normal_textures: hint_normal;
 /* Voxel face RSMA
 
 Format: RGBA8
-Size: 256 layers of any size
+Size: 1..256 layers of any size
 
 PBR roughness, specular, metallic and ambient occlusion.
 Applied only to the first visible voxel along the view ray.
@@ -197,14 +202,14 @@ Called first for each voxel cube by all the shaders.
 
 Returns true if the cube is present (used), false is not present (empty).
 
-pos: Voxel cube position
+pos: Voxel cube position, each coordinate is in [0..15]
 =>
 layer: Layer to use to retrieve the voxels
 has_opaque: Set to true if the cube contains any opaque voxels
 
 */
 bool get_cube(ivec3 pos, out uint layer, out bool has_opaque) {
-	ivec2 tpos = ivec2(pos.x, pos.y | (pos.z << 4));
+	ivec2 tpos = ivec2(pos.x | (pos.y << 4), pos.z);
 	uvec4 cube = uvec4(texelFetch(model_texture, tpos, 0) * 255.0);
 	layer = cube.r | (cube.g << 8u);
 	has_opaque = (cube.b & 4u) != 0u;
@@ -234,27 +239,31 @@ Make sure to use texelFetch to retrieve voxel information without filtering.
 bool get_voxel(ivec3 vpos, uint layer, out ivec3 tpos, out uint voxel, out vec4 color, out bool opaque) {
 	tpos = ivec3(vpos.x | (vpos.y << 4), vpos.z, int(layer));
 	voxel = uint(texelFetch(voxel_textures, tpos, 0).r * 255.0);
+
 	// It is intentional to not set color here. The texture lookup will require
-	// the uv, so it will happen later when get_opaque_material and
-	// get_transparent_material are called.
-	opaque = voxel < TS_FIRST_TRANSPARENT;
-	return voxel != 0u;
+	// the uv, so it will happen later in the *_material calls.
+
+	if (voxel == 0u) {
+		opaque = false;
+		return false;
+	}
+
+	opaque = (uint(texelFetch(palette_texture, ivec2(0, int(voxel)), 0).b * 255.0) & IS_OPAQUE) != 0u;
+	return true;
 }
 
 
-/* PBR lookups shared by both the opaque and transparent passes 
+// PBR material lookups shared by both the opaque and transparent passes
+void pbr_lookup(uint voxel, uint face, vec2 uv, out vec4 color, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
+	uvec3 palette = uvec3(texelFetch(palette_texture, ivec2(int(face), int(voxel)), 0).rgb * 255.0);
 
-Please note that looking up all textures regardless of whether they are
-needed or not is not optimal. You may consider restricting these lookups based
-on voxel value or by material flag bits looked up from a small 256 pixel 
-texture which can always stay in cache with high probability.
+	uint flags = palette.b;
+	uint layer_index = palette.r | (palette.g << 8u);
 
-*/
-void pbr_lookup(uint voxel, uint layer_index, vec2 scaled_uv, out vec4 color, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
-	color = texture(color_textures, vec3(scaled_uv, float(layer_index)));
-	emission = texture(emission_textures, vec3(scaled_uv, float(layer_index))).rgb;
-	normal_map = texture(normal_textures, vec3(scaled_uv, float(layer_index))).rgb;
-	rsma = texture(rsma_textures, vec3(scaled_uv, float(layer_index)));
+	color = (flags & HAS_COLOR) != 0u ? texture(color_textures, vec3(uv, float(layer_index))) : vec4(0.0);
+	emission = (flags & HAS_EMISSION) != 0u ? texture(emission_textures, vec3(uv, float(layer_index))).rgb : vec3(0.0);
+	normal_map = (flags & HAS_NORMAL) != 0u ? texture(normal_textures, vec3(uv, float(layer_index))).xyz : vec3(0.5, 0.5, 1.0);
+	rsma = (flags & HAS_RSMA) != 0u ? texture(rsma_textures, vec3(uv, float(layer_index))) : vec4(1.0, 0.5, 0.0, 1.0);
 }
 
 
@@ -276,14 +285,7 @@ rsma: Roughness, specular, metallic and ambient occlusion
 Called only once per ray for the first opaque voxel hit by the ray.
 */
 void get_opaque_material(ivec3 tpos, uint voxel, vec4 color, uint face, vec2 uv, out vec3 albedo, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
-	vec2 scaled_uv = uv * uv_scale;
-#if TS_SEPARATE_FACE_TEXTURES
-	uint layer_index = TS_NUMBER_OF_TEXTURES * face + voxel;
-#else
-	uint layer_index = voxel;
-#endif
-
-	pbr_lookup(voxel, layer_index, scaled_uv, color, emission, normal_map, rsma);
+	pbr_lookup(voxel, face, uv * uv_scale, color, emission, normal_map, rsma);
 	albedo = color.rgb;
 }
 
@@ -310,12 +312,6 @@ voxels with the same value. Surface normal_map and rsma are used only on the
 first surface hit, no need to return those if first is false.
 */
 void get_transparent_material(ivec3 tpos, uint voxel, vec4 color, uint face, vec2 uv, out vec3 transmittance, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
-#if TS_SEPARATE_FACE_TEXTURES
-	uint layer_index = TS_NUMBER_OF_TEXTURES * face + voxel;
-#else
-	uint layer_index = voxel;
-#endif
-
-	pbr_lookup(voxel, layer_index, uv * uv_scale, color, emission, normal_map, rsma);
-	transmittance = 1.0 - color.rgb * (1.0 - color.a);
+	pbr_lookup(voxel, face, uv * uv_scale, color, emission, normal_map, rsma);
+	transmittance = 1.0 - color.rgb * (1.0 - color.a);  // FIXME: Preprocess this
 }

@@ -149,6 +149,7 @@ func configure():
 		rsma_textures == null
 	)
 	if is_incomplete:
+		show_nodes(false)
 		return
 
 	var is_valid_size_in_cubes: bool = (
@@ -160,13 +161,16 @@ func configure():
 		if not is_valid_size_in_cubes:
 			print("%s: Invalid model_size. Must be between (1, 1, 1) and (16, 16, 16)" % [name])
 		elif not expensive_verifications():
+			show_nodes(false)
 			return
 
 	if not is_valid_size_in_cubes:
+		show_nodes(false)
 		return
 
 	set_node_scales()
 	set_shader_parameters()
+	show_nodes(true)
 
 
 func set_node_scales():
@@ -187,6 +191,12 @@ func set_shader_parameters():
 		shader_material.set_shader_parameter("emission_textures", emission_textures)
 		shader_material.set_shader_parameter("normal_textures", normal_textures)
 		shader_material.set_shader_parameter("rsma_textures", rsma_textures)
+
+
+func show_nodes(visible):
+	$Opaque.visible = visible
+	$Transparent.visible = visible
+	$Shadow.visible = visible
 
 
 func expensive_verifications():
