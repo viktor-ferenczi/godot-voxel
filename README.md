@@ -15,9 +15,7 @@ Scroll down on this page for screenshots on what's possible.
 
 Open the scene from: `addons\voxel\Examples\TorusBox`
 
-![Example TorusBux scene](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Preview.png)
-
-Check out the textures configured on the `TextureVoxelBox` node.
+![Example TorusBox scene](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Preview.png)
 
 There are separate shaders for the opaque, transparent and shadow passes.
 They are rendered by their own child nodes, the shaders are defined there.
@@ -125,10 +123,7 @@ ramdisk contents are lost on the next OS reboot.
 
 ## Plans
 
-* Rename Model to something else, because it can be confused with Godot's Cubemap feature (which is unrelated)
 * Resurrect the Vox resource loader
-* Add support for different textures on each side of the voxel
-* Clean up the Python texture atlas pre-processing code
 * Clean up and add the automated placement of
   * Lights to make use of SDFGI
   * Occluders to reduce overdraw

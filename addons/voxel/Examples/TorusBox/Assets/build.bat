@@ -1,5 +1,4 @@
 set PYTHON=python
 set TOOLS=..\..\..\Tools
-%PYTHON% %TOOLS%\vox_to_images.py 64 80 48 VoxExport/Slice.png VoxExport/Palette.png Texture/Voxel.png Texture/Model.png
-%PYTHON% %TOOLS%\build_textures.py 8 16 256 Material Texture
-pause
+%PYTHON% -u -OO %TOOLS%\vox_to_images.py Vox/Slice.png Vox/Palette.png Voxel.png Model.png 64 80 48
+%PYTHON% -u -OO %TOOLS%\build_textures.py palette.json ../../Materials Palette.png Color.png Emission.png Normal.png RSMA.png 512

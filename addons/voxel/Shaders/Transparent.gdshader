@@ -16,7 +16,7 @@ render_mode cull_front;
 
 varying flat mat4 _MODELVIEW_MATRIX;
 varying flat mat3 NORMALS;
-varying flat vec3 SIZE_IN_CUBES_REC;
+varying flat vec3 MODEL_SIZE_REC;
 varying smooth vec3 BACK;
 varying smooth vec3 RAY;
 
@@ -31,7 +31,7 @@ void vertex() {
 	NORMALS[2] = normalize(MODELVIEW_MATRIX[2].xyz);
 
 	// Precalculate reciprocal
-	SIZE_IN_CUBES_REC = 1.0 / vec3(size_in_cubes);
+	MODEL_SIZE_REC = 1.0 / vec3(model_size);
 
 	// Voxel coordinates are encoded as interpolated vertex coordinates
 	BACK = VERTEX;
@@ -51,14 +51,14 @@ void fragment() {
 
 	// 3D line drawing along 16x16x16 voxel cubes inside the whole voxel model
 	DDA ddc;
-	dda_init(ddc, size_in_cubes, front, ray, ray_rec);
+	dda_init(ddc, model_size, front, ray, ray_rec);
 
 	vec3 totalEmission = vec3(0.0);
 	vec3 totalTrans = vec3(1.0);
 	vec3 paint = vec3(0.0);
 	bool first = true;
 	bool inside = false;
-	int prevVoxel = 0;
+	uint prevVoxel = 0u;
 	bool stop = false;
 	bool no_more_cubes = false;
 
@@ -72,17 +72,17 @@ void fragment() {
 			// 3D line drawing along individual voxels inside the 16x16x16 voxel cube
 			DDA ddv;
 			vec3 origin;
-			dda_init_inner(ddv, ddc, size_in_cubes, SIZE_IN_CUBES_REC, ray, ray_rec, origin);
+			dda_init_inner(ddv, ddc, model_size, MODEL_SIZE_REC, ray, ray_rec, origin);
 
 			no_more_cubes = dda_step(ddc);
-			vec3 exit = dda_voxel_face_hit(ddc, SIZE_IN_CUBES_REC);
+			vec3 exit = dda_voxel_face_hit(ddc, MODEL_SIZE_REC);
 			float exitDepth;
 			calc_depth(exit, PROJECTION_MATRIX, _MODELVIEW_MATRIX, exitDepth);
 
 			if(exitDepth < 0.0) {
 				for(int vsteps=0; vsteps < 49; vsteps++) {
 					ivec3 tpos;
-					int voxel;
+					uint voxel;
 					vec4 color;
 					bool opaque;
 
@@ -90,7 +90,7 @@ void fragment() {
 					if (get_voxel(ddv.position, layer, tpos, voxel, color, opaque)) {
 
 						// Ray intersection with the voxel's face (plane) in model coordinates
-						vec3 hit = origin + dda_voxel_face_hit(ddv, vec3(1.0 / 16.0)) * SIZE_IN_CUBES_REC;
+						vec3 hit = origin + dda_voxel_face_hit(ddv, vec3(1.0 / 16.0)) * MODEL_SIZE_REC;
 
 						// Depth for intersection and lighting
 						float linearDepth;
@@ -110,14 +110,15 @@ void fragment() {
 							inside = true;
 
 							// UV for texturing
-							vec2 uv = dda_voxel_face_uv(ddv, hit);
+							uint face;
+							vec2 uv = dda_voxel_face_uv(ddv, model_size, hit, face);
 
 							// Material
 							vec3 transmittance;
 							vec3 emission;
 							vec3 normal_map;
 							vec4 rsma;
-							get_transparent_material(tpos, voxel, color, uv, transmittance, emission, normal_map, rsma);
+							get_transparent_material(tpos, voxel, color, face, uv, transmittance, emission, normal_map, rsma);
 
 							// Accumulate emission on each voxel
 							totalEmission += totalTrans * emission;
@@ -158,7 +159,7 @@ void fragment() {
 						// Empty voxel
 						if (inside) {
 							inside = false;
-							prevVoxel = 0;
+							prevVoxel = 0u;
 						}
 					}
 
@@ -171,7 +172,7 @@ void fragment() {
 			// Empty cube
 			if (inside) {
 				inside = false;
-				prevVoxel = 0;
+				prevVoxel = 0u;
 			}
 
 			no_more_cubes = dda_step(ddc);
@@ -208,5 +209,5 @@ void fragment() {
 	// Multiplier was hand tuned to match MagicaVoxel's lighting
 	// See also the same constant in CubeLighting.cpp
 	// FIXME: Turn this constant into a uniform
-	EMISSION = totalEmission * 0.05;
+	EMISSION = totalEmission; // * 0.05; !!!
 }

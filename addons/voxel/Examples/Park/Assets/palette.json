@@ -1,0 +1,21 @@
+{
+  "materials": {
+    "001": ["Stone-Concrete"],
+    "003": ["Rock-Brown", "Rock-Brown", "Rock-Brown", "Rock-Brown", "Grass-Stylized", "Rock-Brown"],
+    "004": ["Wood-Oak"],
+    "006": ["Stone-Smooth"],
+    "007": ["Metal-Aluminum"],
+    "008": ["Stone-Column"],
+    "009": ["Stone-Path"],
+    "212": ["Wood-Oak"],
+    "210": ["Leaf-Cedar"],
+    "221": ["Metal-Iron"],
+    "225": ["Metal-Bronze"],
+    "226": ["Metal-Bronze"],
+    "227": ["Metal-Bronze"],
+    "228": ["Metal-Bronze"],
+    "234": ["Metal-Copper"],
+    "235": ["Leaf-Oak"],
+    "251": ["Glass-Lamp"]
+  }
+}

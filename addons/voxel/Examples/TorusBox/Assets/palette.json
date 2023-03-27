@@ -1,0 +1,8 @@
+{
+  "materials": {
+    "001": ["Metal-Bronze"],
+    "002": ["Metal-Silver"],
+    "003": ["Metal-Gold"],
+    "004": ["Metal-Titanium"]
+  }
+}

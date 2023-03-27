@@ -1,4 +1,0 @@
-Skybox license: Public Domain
-Sources:
-https://polyhaven.com/a/lilienstein
-https://polyhaven.com/a/brown_photostudio_02

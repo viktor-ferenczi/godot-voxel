@@ -1,15 +1,16 @@
-[gd_scene load_steps=19 format=3 uid="uid://ca7lh3m7k18q3"]
+[gd_scene load_steps=20 format=3 uid="uid://0cmsmht5s3se"]
 
-[ext_resource type="Environment" uid="uid://c3afpbdc12ko3" path="res://addons/voxel/Examples/Environment/Photostudio.tres" id="1_etq48"]
+[ext_resource type="Environment" uid="uid://d31fyqy34attt" path="res://addons/voxel/Examples/Environments/Photostudio.tres" id="1_etq48"]
 [ext_resource type="Script" path="res://addons/voxel/Examples/TorusBox/TorusBox.gd" id="1_n3c0i"]
 [ext_resource type="PackedScene" uid="uid://csrg8wea6p8hh" path="res://addons/voxel/Scenes/TexturedVoxelModel.tscn" id="2_h717o"]
-[ext_resource type="Texture2D" uid="uid://cxk2icp234ia7" path="res://addons/voxel/Examples/TorusBox/Assets/Texture/Model.png" id="3_ayd2u"]
-[ext_resource type="CompressedTexture2DArray" uid="uid://bim560poosi50" path="res://addons/voxel/Examples/TorusBox/Assets/Texture/Color.png" id="5_e6yth"]
-[ext_resource type="CompressedTexture2DArray" uid="uid://dmx2s54i4vhs5" path="res://addons/voxel/Examples/TorusBox/Assets/Texture/Voxel.png" id="5_n1ufy"]
-[ext_resource type="CompressedTexture2DArray" uid="uid://r07iflxwuvt4" path="res://addons/voxel/Examples/TorusBox/Assets/Texture/Emission.png" id="6_pwl1e"]
-[ext_resource type="CompressedTexture2DArray" uid="uid://c2hb5urkt16aq" path="res://addons/voxel/Examples/TorusBox/Assets/Texture/Normal.png" id="7_d7mem"]
-[ext_resource type="CompressedTexture2DArray" uid="uid://dajl16whn53q8" path="res://addons/voxel/Examples/TorusBox/Assets/Texture/RSMA.png" id="8_ngl8p"]
+[ext_resource type="Texture2D" uid="uid://dltatidneccje" path="res://addons/voxel/Examples/TorusBox/Assets/Model.png" id="4_7rnav"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://ddogs0tsovu8f" path="res://addons/voxel/Examples/TorusBox/Assets/Voxel.png" id="5_3w17g"]
+[ext_resource type="Texture2D" uid="uid://d3teuqnoaxljr" path="res://addons/voxel/Examples/TorusBox/Assets/Palette.png" id="5_ltxql"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://bffom6cq1ade0" path="res://addons/voxel/Examples/TorusBox/Assets/Color.png" id="7_xyhon"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://dk0w7hirnpgkv" path="res://addons/voxel/Examples/TorusBox/Assets/Emission.png" id="8_m2fk3"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://fpa6srwasshy" path="res://addons/voxel/Examples/TorusBox/Assets/Normal.png" id="9_o7jby"]
 [ext_resource type="Texture2D" uid="uid://bwrgurpn8yh1c" path="res://addons/voxel/Examples/TorusBox/Assets/Construction.png" id="10_304vr"]
+[ext_resource type="CompressedTexture2DArray" uid="uid://cmc23yvmi318s" path="res://addons/voxel/Examples/TorusBox/Assets/RSMA.png" id="10_g42db"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fnkoe"]
 albedo_texture = ExtResource("10_304vr")
@@ -77,14 +78,15 @@ transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
 [node name="TexturedVoxelModel" parent="Stage" instance=ExtResource("2_h717o")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, -0.3, -0.25, 0.4)
 voxel_size = 0.01
-size_in_cubes = Vector3i(4, 5, 3)
-model_texture = ExtResource("3_ayd2u")
-voxel_textures = ExtResource("5_n1ufy")
-uv_scale = 8.0
-color_textures = ExtResource("5_e6yth")
-emission_textures = ExtResource("6_pwl1e")
-normal_textures = ExtResource("7_d7mem")
-rsma_textures = ExtResource("8_ngl8p")
+uv_scale = 1.0
+model_size = Vector3i(4, 5, 3)
+model_texture = ExtResource("4_7rnav")
+voxel_textures = ExtResource("5_3w17g")
+palette_texture = ExtResource("5_ltxql")
+color_textures = ExtResource("7_xyhon")
+emission_textures = ExtResource("8_m2fk3")
+normal_textures = ExtResource("9_o7jby")
+rsma_textures = ExtResource("10_g42db")
 
 [node name="Table" type="MeshInstance3D" parent="Stage"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
@@ -101,7 +103,6 @@ skeleton = NodePath("../Stage")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(0.858092, -0.253999, 0.446277, -0.00182833, 0.867577, 0.497299, -0.513493, -0.427544, 0.743997, 2, 1.3, 3)
-environment = ExtResource("1_etq48")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

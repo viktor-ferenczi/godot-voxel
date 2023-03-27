@@ -1,13 +1,14 @@
-// Grid size in 16x16x16 voxel cubes
-uniform ivec3 size_in_cubes;
+// Model size in 16x16x16 voxel cubes
+uniform ivec3 model_size;
 
 
-/* Voxel cube information for the 1st level DDA
-Format: RGBA8
-Size: 16 x 256
+/* Model information for the 1st level DDA
 
-Each pixel in the cube map corresponds to a 16x16x16
-voxel cube. Each voxel cube contains 16x16x16 voxels,
+Format: RGB8
+Size: 256 x 16
+
+Each pixel corresponds to a 16x16x16 voxel cube. 
+Each voxel cube contains 16x16x16 voxels,
 therefore the maximum voxel resolution is 256x256x256.
 
 Two levels of DDA is used as an optimization to skip
@@ -131,12 +132,12 @@ opaque: Set to true if the voxel is opaque, false if the voxel is transparent
 
 Make sure to use texelFetch to retrieve voxel information without filtering.
 */
-bool get_voxel(ivec3 vpos, uint layer, out ivec3 tpos, out int voxel, out vec4 color, out bool opaque) {
+bool get_voxel(ivec3 vpos, uint layer, out ivec3 tpos, out uint voxel, out vec4 color, out bool opaque) {
 	tpos = ivec3(vpos.x, vpos.y | (vpos.z << 4), int(layer));
-	voxel = int(texelFetch(voxel_textures, tpos, 0).r * 255.0);
-	color = texelFetch(palette, ivec2(voxel, 0), 0);
+	voxel = uint(texelFetch(voxel_textures, tpos, 0).r * 255.0);
+	color = texelFetch(palette, ivec2(int(voxel), 0), 0);
 	opaque = color.a > 0.999;
-	return voxel != 0;
+	return voxel != 0u;
 }
 
 
@@ -147,7 +148,8 @@ Called only for the opaque voxels by the opaque shader.
 tpos: Texture coordinates as returned by the get_voxel function
 voxel: Voxel information as returned by the get_voxel function
 color: Voxel color as returned by the get_voxel function
-uv: Texture UV, [0..1] covers each quad face of the voxel cube (size*size voxels)
+face: Voxel face hit by the ray [0..5], by face normal: -X +X -Y +Y -Z +Z
+uv: Texture UV, [0..1] covers each quad face of the voxel cube (16x16 voxels)
 =>
 albedo: Surface color
 emission: Color of emitted light, all zero for no emission
@@ -156,14 +158,14 @@ rsma: Roughness, specular, metallic and ambient occlusion
 
 Called only once per ray for the first opaque voxel hit by the ray.
 */
-void get_opaque_material(ivec3 tpos, int voxel, vec4 color, vec2 uv, out vec3 albedo, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
+void get_opaque_material(ivec3 tpos, uint voxel, vec4 color, uint face, vec2 uv, out vec3 albedo, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
 	albedo = color.rgb;
 
 	// Emissive materials are always rendered as transparent
 	emission = vec3(0.0);
 
 	normal_map = vec3(0.5, 0.5, 1.0);
-	rsma = vec4(texelFetch(materials, ivec2(1, voxel), 0).rgb, 1.0);
+	rsma = vec4(texelFetch(materials, ivec2(1, int(voxel)), 0).rgb, 1.0);
 }
 
 
@@ -175,7 +177,8 @@ tpos: Texture coordinates as returned by the get_voxel function
 voxel: Voxel information as returned by the get_voxel function
 color: Voxel color as returned by the get_voxel function
 first: True if this is the first transparent voxel encountered along the ray
-uv: Texture UV, [0..1] covers each quad face of the voxel cube (size*size voxels)
+face: Voxel face hit by the ray [0..5], by face normal: -X +X -Y +Y -Z +Z
+uv: Texture UV, [0..1] covers each quad face of the voxel cube (16x16 voxels)
 =>
 transmittance: Proportion of light to pass through
 emission: Emissive color (adds up from voxels behind each other)
@@ -187,12 +190,12 @@ exits the voxel cube. Transmittance is used only once for subsequent transparent
 voxels with the same value. Surface normal_map and rsma are used only on the
 first surface hit, no need to return those if first is false.
 */
-void get_transparent_material(ivec3 tpos, int voxel, vec4 color, vec2 uv, out vec3 transmittance, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
+void get_transparent_material(ivec3 tpos, uint voxel, vec4 color, uint face, vec2 uv, out vec3 transmittance, out vec3 emission, out vec3 normal_map, out vec4 rsma) {
 	transmittance = 1.0 - color.rgb * (1.0 - color.a);
 
-	vec4 femd = texelFetch(materials, ivec2(3, voxel), 0);
+	vec4 femd = texelFetch(materials, ivec2(3, int(voxel)), 0);
 	emission = femd.g > 0.001 ? color.rgb * (pow(2.0, femd.r * 5.0) * femd.g) * 32.0 : vec3(0.0);
 
 	normal_map = vec3(0.5, 0.5, 1.0);
-	rsma = vec4(texelFetch(materials, ivec2(1, voxel), 0).rgb, 1.0);
+	rsma = vec4(texelFetch(materials, ivec2(1, int(voxel)), 0).rgb, 1.0);
 }
