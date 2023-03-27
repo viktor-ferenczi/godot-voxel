@@ -13,9 +13,13 @@ Scroll down on this page for screenshots on what's possible.
 
 ## Example
 
-Open the scene from: `addons\voxel\Examples\TorusBox`
+Open the example scenes:
+- `addons\voxel\Examples\Park`
+- `addons\voxel\Examples\TorusBox`
 
-![Example TorusBox scene](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Preview.png)
+![Example Park scene](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/Park.png)
+
+![Example TorusBox scene](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/TorusBox.png)
 
 There are separate shaders for the opaque, transparent and shadow passes.
 They are rendered by their own child nodes, the shaders are defined there.
