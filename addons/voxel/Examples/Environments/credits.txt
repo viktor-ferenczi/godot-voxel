@@ -1,0 +1,6 @@
+PolyHaven Skybox license: Public Domain
+https://polyhaven.com/a/lilienstein
+https://polyhaven.com/a/brown_photostudio_02
+
+AllSky Free Godot edition:
+https://github.com/rpgwhitelock/AllSkyFree_Godot

@@ -1,7 +1,6 @@
-[gd_scene load_steps=17 format=3 uid="uid://dqajowckfodlb"]
+[gd_scene load_steps=10 format=3 uid="uid://66uaflb704mi"]
 
-[ext_resource type="Environment" uid="uid://bkm1p41fciowy" path="res://addons/voxel/Examples/Environment/ColdNight.tres" id="1_c5d20"]
-[ext_resource type="Environment" uid="uid://c3afpbdc12ko3" path="res://addons/voxel/Examples/Environment/Photostudio.tres" id="2_dh5v3"]
+[ext_resource type="Environment" uid="uid://df7x243u5ydb3" path="res://addons/voxel/Examples/Environments/ColdNight.tres" id="1_6ptmk"]
 [ext_resource type="PackedScene" uid="uid://csrg8wea6p8hh" path="res://addons/voxel/Scenes/TexturedVoxelModel.tscn" id="3_bavrh"]
 [ext_resource type="Texture2D" uid="uid://dgrwvtmo62amo" path="res://addons/voxel/Examples/Park/Assets/Model.png" id="3_n74q8"]
 [ext_resource type="CompressedTexture2DArray" uid="uid://bjy4k3u7wprki" path="res://addons/voxel/Examples/Park/Assets/Voxel.png" id="4_a24xy"]
@@ -10,56 +9,11 @@
 [ext_resource type="CompressedTexture2DArray" uid="uid://r843oxok52aa" path="res://addons/voxel/Examples/Park/Assets/Emission.png" id="8_3r8om"]
 [ext_resource type="CompressedTexture2DArray" uid="uid://bdasen84jlcpd" path="res://addons/voxel/Examples/Park/Assets/Normal.png" id="9_13qvm"]
 [ext_resource type="CompressedTexture2DArray" uid="uid://c8mvlrlam8qav" path="res://addons/voxel/Examples/Park/Assets/RSMA.png" id="10_l6wm3"]
-[ext_resource type="Shader" path="res://addons/voxel/Shaders/Opaque.gdshader" id="11_uwcwy"]
-[ext_resource type="Shader" path="res://addons/voxel/Shaders/Transparent.gdshader" id="12_ajrwf"]
-[ext_resource type="Shader" path="res://addons/voxel/Shaders/Shadow.gdshader" id="13_g1lch"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_om7cn"]
-resource_local_to_scene = true
-render_priority = 0
-shader = ExtResource("11_uwcwy")
-shader_parameter/uv_scale = 2.0
-shader_parameter/model_size = Vector3i(3, 2, 2)
-shader_parameter/model_texture = ExtResource("3_n74q8")
-shader_parameter/voxel_textures = ExtResource("4_a24xy")
-shader_parameter/palette_texture = ExtResource("5_35dio")
-shader_parameter/color_textures = ExtResource("7_jwhna")
-shader_parameter/emission_textures = ExtResource("8_3r8om")
-shader_parameter/normal_textures = ExtResource("9_13qvm")
-shader_parameter/rsma_textures = ExtResource("10_l6wm3")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_uo648"]
-resource_local_to_scene = true
-render_priority = 0
-shader = ExtResource("12_ajrwf")
-shader_parameter/uv_scale = 2.0
-shader_parameter/model_size = Vector3i(3, 2, 2)
-shader_parameter/model_texture = ExtResource("3_n74q8")
-shader_parameter/voxel_textures = ExtResource("4_a24xy")
-shader_parameter/palette_texture = ExtResource("5_35dio")
-shader_parameter/color_textures = ExtResource("7_jwhna")
-shader_parameter/emission_textures = ExtResource("8_3r8om")
-shader_parameter/normal_textures = ExtResource("9_13qvm")
-shader_parameter/rsma_textures = ExtResource("10_l6wm3")
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xnoff"]
-resource_local_to_scene = true
-render_priority = 0
-shader = ExtResource("13_g1lch")
-shader_parameter/uv_scale = 2.0
-shader_parameter/model_size = Vector3i(3, 2, 2)
-shader_parameter/model_texture = ExtResource("3_n74q8")
-shader_parameter/voxel_textures = ExtResource("4_a24xy")
-shader_parameter/palette_texture = ExtResource("5_35dio")
-shader_parameter/color_textures = ExtResource("7_jwhna")
-shader_parameter/emission_textures = ExtResource("8_3r8om")
-shader_parameter/normal_textures = ExtResource("9_13qvm")
-shader_parameter/rsma_textures = ExtResource("10_l6wm3")
 
 [node name="Park" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = ExtResource("1_c5d20")
+environment = ExtResource("1_6ptmk")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(-0.939693, -0.241845, 0.241845, 0, 0.707107, 0.707107, -0.34202, 0.664463, -0.664463, 0, 0, 0)
@@ -69,8 +23,8 @@ shadow_enabled = true
 shadow_bias = 0.02
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.858092, -0.253999, 0.446277, -0.00182833, 0.867577, 0.497299, -0.513493, -0.427544, 0.743997, 2, 1.3, 3)
-environment = ExtResource("2_dh5v3")
+transform = Transform3D(0.892586, 0.154209, -0.423686, 0, 0.939693, 0.34202, 0.450878, -0.305282, 0.838756, 0.2, 2.5, 5)
+fov = 77.2587
 
 [node name="TexturedVoxelModel" parent="." instance=ExtResource("3_bavrh")]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 3.2, 0)
@@ -85,55 +39,45 @@ emission_textures = ExtResource("8_3r8om")
 normal_textures = ExtResource("9_13qvm")
 rsma_textures = ExtResource("10_l6wm3")
 
-[node name="Opaque" parent="TexturedVoxelModel" index="0"]
-transform = Transform3D(4.8, 0, 0, 0, 3.2, 0, 0, 0, 3.2, 0, 0, 0)
-surface_material_override/0 = SubResource("ShaderMaterial_om7cn")
-
-[node name="Transparent" parent="TexturedVoxelModel" index="1"]
-transform = Transform3D(4.8, 0, 0, 0, 3.2, 0, 0, 0, 3.2, 0, 0, 0)
-surface_material_override/0 = SubResource("ShaderMaterial_uo648")
-
-[node name="Shadow" parent="TexturedVoxelModel" index="2"]
-transform = Transform3D(4.8, 0, 0, 0, 3.2, 0, 0, 0, 3.2, 0, 0, 0)
-surface_material_override/0 = SubResource("ShaderMaterial_xnoff")
-
 [node name="Torches" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 2.5, 2.1)
 
 [node name="OmniLight3D1" type="OmniLight3D" parent="Torches"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.4, 0, 0)
 light_color = Color(1, 1, 0.666667, 1)
+light_energy = 1.5
 light_size = 0.5
 light_specular = 0.0
 shadow_enabled = true
 shadow_bias = 0.02
-omni_range = 3.898
+omni_range = 3.5
 
 [node name="OmniLight3D2" type="OmniLight3D" parent="Torches"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4, 0, 0)
 light_color = Color(1, 1, 0.666667, 1)
+light_energy = 1.5
 light_size = 0.5
 light_specular = 0.0
 shadow_enabled = true
 shadow_bias = 0.02
-omni_range = 3.898
+omni_range = 3.5
 
 [node name="OmniLight3D3" type="OmniLight3D" parent="Torches"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.4)
 light_color = Color(1, 1, 0.666667, 1)
+light_energy = 1.5
 light_size = 0.5
 light_specular = 0.0
 shadow_enabled = true
 shadow_bias = 0.02
-omni_range = 3.898
+omni_range = 3.5
 
 [node name="OmniLight3D4" type="OmniLight3D" parent="Torches"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.4)
 light_color = Color(1, 1, 0.666667, 1)
+light_energy = 1.5
 light_size = 0.5
 light_specular = 0.0
 shadow_enabled = true
 shadow_bias = 0.02
-omni_range = 3.898
-
-[editable path="TexturedVoxelModel"]
+omni_range = 3.5

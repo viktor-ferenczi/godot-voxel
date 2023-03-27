@@ -209,5 +209,5 @@ void fragment() {
 	// Multiplier was hand tuned to match MagicaVoxel's lighting
 	// See also the same constant in CubeLighting.cpp
 	// FIXME: Turn this constant into a uniform
-	EMISSION = totalEmission * 0.05;
+	EMISSION = totalEmission; // * 0.05; !!!
 }

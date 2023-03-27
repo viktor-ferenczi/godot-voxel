@@ -13,6 +13,8 @@ from typing import List, Tuple, Dict, Optional
 import numpy as np
 import cv2
 
+DEBUG = True
+
 Color = Tuple[int, int, int, int]
 
 # Color values
@@ -152,7 +154,7 @@ class Material:
 
     """
 
-    def __init__(self, face_dir: str, res: int):
+    def __init__(self, mat_dir: str, res: int):
         self.has_color = 0
         self.has_emission = 0
         self.has_normal = 0
@@ -163,16 +165,18 @@ class Material:
         self.normal = new_texture(res, DEFAULT_NORMAL_AND_HEIGHT)
         self.rsma = new_texture(res, DEFAULT_RSMA)
 
-        self.has_color |= load_channel(face_dir, res, self.color, RGBA, RGBA, MAT_COLOR)
-        self.has_emission |= load_channel(face_dir, res, self.emission, RGB, RGB, MAT_EMISSION)
-        self.has_normal |= load_channel(face_dir, res, self.normal, RG, RG, MAT_NORMAL)
-        self.has_normal |= load_channel(face_dir, res, self.normal, B, R, MAT_HEIGHT)
-        self.has_rsma |= load_channel(face_dir, res, self.rsma, R, R, MAT_ROUGHNESS)
-        self.has_rsma |= load_channel(face_dir, res, self.rsma, G, R, MAT_SPECULAR)
-        self.has_rsma |= load_channel(face_dir, res, self.rsma, B, R, MAT_METALLIC)
-        self.has_rsma |= load_channel(face_dir, res, self.rsma, A, R, MAT_AMBIENT_OCCLUSION)
+        self.has_color |= load_channel(mat_dir, res, self.color, RGBA, RGBA, MAT_COLOR)
+        self.has_emission |= load_channel(mat_dir, res, self.emission, RGB, RGB, MAT_EMISSION)
+        self.has_normal |= load_channel(mat_dir, res, self.normal, RG, RG, MAT_NORMAL)
+        self.has_normal |= load_channel(mat_dir, res, self.normal, B, R, MAT_HEIGHT)
+        self.has_rsma |= load_channel(mat_dir, res, self.rsma, R, R, MAT_ROUGHNESS)
+        self.has_rsma |= load_channel(mat_dir, res, self.rsma, G, R, MAT_SPECULAR)
+        self.has_rsma |= load_channel(mat_dir, res, self.rsma, B, R, MAT_METALLIC)
+        self.has_rsma |= load_channel(mat_dir, res, self.rsma, A, R, MAT_AMBIENT_OCCLUSION)
 
-        self.has_any = self.has_color | self.has_emission | self.has_normal | self.has_rsma
+        has_any = self.has_color | self.has_emission | self.has_normal | self.has_rsma
+        if not has_any:
+            raise IOError(f"Could not load any channels for material: {mat_dir}")
 
         self.is_opaque = self.has_color and np.all(self.color[:, :, 3] == 255)
 
@@ -226,7 +230,7 @@ class Palette:
 
     def process(self):
         materials = self.palette_json["materials"]
-        layers, flags = self.load_materials(materials)
+        names, layers, flags = self.load_materials(materials)
 
         self.fill_palette(materials, layers, flags)
         self.verify_palette()
@@ -237,7 +241,26 @@ class Palette:
         write_texture(self.normal_png_path, self.normal_atlas)
         write_texture(self.rsma_png_path, self.rsma_atlas)
 
-    def load_materials(self, materials: Dict[str, List[str]]) -> Tuple[Dict[str, int], Dict[str, int]]:
+        if DEBUG:
+            print('Palette (used items only):')
+            for i, row in enumerate(self.palette):
+                if np.any(row != 0):
+                    print(f'Voxel value {i}: ')
+                    for f, face in enumerate(row):
+                        mat_index = face[0]
+                        name = names[mat_index]
+                        flg = flags[name]
+                        f_flg = ''.join([
+                            'IS_OPAQUE ' if flg & IS_OPAQUE else '',
+                            'HAS_COLOR ' if flg & HAS_COLOR else '',
+                            'HAS_EMISSION ' if flg & HAS_EMISSION else '',
+                            'HAS_NORMAL ' if flg & HAS_NORMAL else '',
+                            'HAS_RSMA ' if flg & HAS_RSMA else '',
+                        ]).rstrip()
+                        print(f'  Face {f}: {face} {name} {f_flg}')
+            print()
+
+    def load_materials(self, materials: Dict[str, List[str]]) -> Tuple[List[str], Dict[str, int], Dict[str, int]]:
         res = self.res
 
         names = sorted(set().union(*list(materials.values())))
@@ -252,6 +275,9 @@ class Palette:
         rows = self.color_atlas.shape[0] // res
         print(f'Slices: {cols}x{rows}')
 
+        if DEBUG:
+            print('Materials:')
+
         layers = {}
         flags = {}
         for i, name in enumerate(names):
@@ -263,6 +289,15 @@ class Palette:
             y = row * res
 
             mat = Material(os.path.join(self.materials_dir, name), res)
+
+            if DEBUG:
+                channels = ''.join([
+                    'color ' if mat.has_color else '',
+                    'emission ' if mat.has_emission else '',
+                    'normal ' if mat.has_normal else '',
+                    'rsma ' if mat.has_rsma else '',
+                ]).rstrip()
+                print(f'{i:3d}: {name} ({channels})')
 
             color = self.color_atlas[y:y + res, x:x + res]
             if mat.has_color:
@@ -288,15 +323,17 @@ class Palette:
             else:
                 rsma[:, :, :3] = self.red_x
 
-            if mat.has_any:
-                flags[name] = mat.flags
-                layers[name] = len(self.color_textures)
-                self.color_textures.append(color)
-                self.emission_textures.append(emission)
-                self.normal_textures.append(normal)
-                self.rsma_textures.append(rsma)
+            flags[name] = mat.flags
+            layers[name] = i
+            self.color_textures.append(color)
+            self.emission_textures.append(emission)
+            self.normal_textures.append(normal)
+            self.rsma_textures.append(rsma)
 
-        return layers, flags
+        if DEBUG:
+            print()
+
+        return names, layers, flags
 
     def fill_palette(self, materials: Dict[str, List[str]], layers: Dict[str, int], flags: Dict[str, int]):
         for voxel, names in materials.items():
