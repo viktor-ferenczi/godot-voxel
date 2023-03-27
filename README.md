@@ -81,13 +81,6 @@ The shader implements color filtering with proper transmittance calculation.
 It is taking the screen texture as the background, which poses some limitations.
 Color filtering works as expected inside the same voxel volume, but 
 
-### Same texture is used on all sides
-
-The current code maps the same texture to all 6 sides of the voxels. It can be
-a problem in case of some games, where the top and bottom sides may differ.
-The shader does not pass the side information (xyz sign of the ray direction
-in model space) to the sampler in the current code.
-
 ### Incorrect received shadows and lighting
 
 Shadows received by the voxel and the lighting (normals) are incorrect with the
