@@ -14,12 +14,12 @@ Scroll down on this page for screenshots on what's possible.
 ## Example
 
 Open the example scenes:
-- `addons\voxel\Examples\Park`
-- `addons\voxel\Examples\TorusBox`
+- `Examples\Park`
+- `Examples\TorusBox`
 
-![Example Park scene](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/Park.png)
+![Example Park scene](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/Park.png)
 
-![Example TorusBox scene](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/TorusBox.png)
+![Example TorusBox scene](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/TorusBox.png)
 
 There are separate shaders for the opaque, transparent and shadow passes.
 They are rendered by their own child nodes, the shaders are defined there.
@@ -136,19 +136,19 @@ Voxel asserts used in the tests: [Tiny Voxel Dungeon](https://maxparata.itch.io/
 
 #### Vox import
 
-Godot (SDFGI, SSAO, Glow) vs. MagicaVoxel rendering: [Full resolution](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/GodotVsMagicaVoxel.full.png)
-![Godot vs. MagicaVoxel](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/GodotVsMagicaVoxel.png)
+Godot (SDFGI, SSAO, Glow) vs. MagicaVoxel rendering: [Full resolution](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/GodotVsMagicaVoxel.full.png)
+![Godot vs. MagicaVoxel](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/GodotVsMagicaVoxel.png)
 
 #### Light placement
 
 Automated placement of light in the cluster centroids of emissive voxels:
-![Light Placement](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/LightPlacement.png)
+![Light Placement](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/LightPlacement.png)
 
 Lighting test:
-![Lighting](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/Lighting.png)
+![Lighting](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/Lighting.png)
 
 Staircase lights:
-![Staircase Lights](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/StaircaseLights.png)
+![Staircase Lights](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/StaircaseLights.png)
 
 #### Occluders
 
@@ -158,9 +158,9 @@ I made no screenshots of occluder placement, but they work similarly to collider
 
 Collider placement
 
-![Collision Boxes](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/CollisionBoxes.png)
+![Collision Boxes](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/CollisionBoxes.png)
 
-![Collision Shapes](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/CollisionShapes.png)
+![Collision Shapes](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/CollisionShapes.png)
 
 Videos are on OneDrive, because they are big.
 
@@ -169,9 +169,9 @@ Videos are on OneDrive, because they are big.
 
 #### Transparent voxels
 
-![Transparency Nature](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/TransparencyNature.png)
+![Transparency Nature](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/TransparencyNature.png)
 
-![Transparency Venice](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/TransparencyVenice.png)
+![Transparency Venice](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/TransparencyVenice.png)
 
 It actually calculates color transmittance, so colorful glass behaves as expected. Unfortunately
 there are no colorful shadows. They could be faked with projectors, which should be supported
@@ -180,13 +180,13 @@ there are no colorful shadows. They could be faked with projectors, which should
 #### Rendering performance tests
 
 60fps with 64 rooms (geForce RTX 3080Ti)
-![Perf. test: 64 rooms](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/PerfRooms64.png)
+![Perf. test: 64 rooms](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/PerfRooms64.png)
 
 With automated light placement included (no fps recorded, unfortunately, it was around 30-40):
-![Perf. test: Lighting, 64 rooms](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/PerfLighting64.png)
+![Perf. test: Lighting, 64 rooms](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/PerfLighting64.png)
 
 #### Fun bugs
 
 A bug resulted in a fancy memory garbage visualizer during shader development:
 
-![Bug: Fancy Memory Garbage Visualizer](https://github.com/viktor-ferenczi/godot-voxel/raw/main/screenshots/BugFancyMemoryGarbage.png)
+![Bug: Fancy Memory Garbage Visualizer](https://github.com/viktor-ferenczi/godot-voxel/raw/main/Docs/Screenshots/BugFancyMemoryGarbage.png)
