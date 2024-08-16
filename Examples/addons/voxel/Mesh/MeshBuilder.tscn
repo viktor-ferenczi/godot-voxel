@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://addons/voxel/Mesh/MeshBuilder.gd" id="1_y2ep3"]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_v32s0"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_gssi0"]
 _surfaces = [{
 "aabb": AABB(0, 0, 0, 1, 1, 1),
 "format": 34359742465,
@@ -19,5 +19,5 @@ script = ExtResource("1_y2ep3")
 
 [node name="VoxelModel" type="MeshInstance3D" parent="."]
 cast_shadow = 0
-mesh = SubResource("ArrayMesh_v32s0")
+mesh = SubResource("ArrayMesh_gssi0")
 metadata/_edit_lock_ = true

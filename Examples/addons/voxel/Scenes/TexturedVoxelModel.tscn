@@ -10,22 +10,22 @@
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("3_w8u84")
-shader_parameter/size_in_cubes = null
 shader_parameter/uv_scale = 16.0
+shader_parameter/model_size = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vu541"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("4_7t30s")
-shader_parameter/size_in_cubes = null
 shader_parameter/uv_scale = 16.0
+shader_parameter/model_size = null
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yxtgf"]
 resource_local_to_scene = true
 render_priority = 0
 shader = ExtResource("5_xnx2s")
-shader_parameter/size_in_cubes = null
 shader_parameter/uv_scale = 16.0
+shader_parameter/model_size = null
 
 [node name="TexturedVoxelModel" type="Node3D"]
 script = ExtResource("1_ivamt")

@@ -1,12 +1,13 @@
-[gd_resource type="ArrayMesh" format=3 uid="uid://bxy6j5f7ja3gv"]
+[gd_resource type="ArrayMesh" format=4 uid="uid://bxy6j5f7ja3gv"]
 
 [resource]
 _surfaces = [{
 "aabb": AABB(0, 0, 0, 1, 1, 1),
-"format": 4097,
+"format": 34359742465,
 "index_count": 14,
-"index_data": PackedByteArray(0, 0, 1, 0, 2, 0, 3, 0, 4, 0, 1, 0, 5, 0, 0, 0, 6, 0, 2, 0, 7, 0, 4, 0, 6, 0, 5, 0),
+"index_data": PackedByteArray("AAABAAIAAwAEAAEABQAAAAYAAgAHAAQABgAFAA=="),
 "primitive": 4,
+"uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 8,
-"vertex_data": PackedByteArray(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 0, 0, 0, 0, 128, 63, 0, 0, 128, 63, 0, 0, 0, 0)
+"vertex_data": PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA/AACAPwAAAAAAAAAAAACAPwAAAAAAAIA/AACAPwAAgD8AAIA/AAAAAAAAgD8AAIA/AAAAAAAAgD8AAAAAAACAPwAAgD8AAAAA")
 }]
