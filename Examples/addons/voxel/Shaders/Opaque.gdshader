@@ -64,12 +64,12 @@ void fragment() {
 			vec3 origin;
 			dda_init_inner(ddv, ddc, model_size, MODEL_SIZE_REC, ray, ray_rec, origin);
 
+			float depth;
 			no_more_cubes = dda_step(ddc);
 			vec3 exit = dda_voxel_face_hit(ddc, MODEL_SIZE_REC);
-			float exitDepth;
-			calc_depth(exit, PROJECTION_MATRIX, _MODELVIEW_MATRIX, exitDepth);
+			vec3 exit_vertex = calc_vertex(exit, PROJECTION_MATRIX, _MODELVIEW_MATRIX, depth);
 
-			if(exitDepth < 0.0) {
+			if(exit_vertex.z < 0.0) {
 				for(int vsteps=0; vsteps < 49; vsteps++) {
 					ivec3 tpos;
 					uint voxel;
@@ -83,12 +83,12 @@ void fragment() {
 						vec3 hit = origin + dda_voxel_face_hit(ddv, vec3(1.0 / 16.0)) * MODEL_SIZE_REC;
 
 						// Depth for intersection and lighting
-						float linearDepth;
-						float depth = calc_depth(hit, PROJECTION_MATRIX, _MODELVIEW_MATRIX, linearDepth);
+						vec3 light_vertex = calc_vertex(hit, PROJECTION_MATRIX, _MODELVIEW_MATRIX, depth);
 
 						// Consider only voxels in front of the screen
-						if (linearDepth < 0.0) {
+						if (light_vertex.z < 0.0) {
 							DEPTH = depth;
+							LIGHT_VERTEX = light_vertex;
 
 							// Surface normals
 							dda_voxel_face_normals(ddv, NORMALS, NORMAL, TANGENT, BINORMAL);

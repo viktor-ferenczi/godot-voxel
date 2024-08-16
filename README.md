@@ -81,43 +81,6 @@ The shader implements color filtering with proper transmittance calculation.
 It is taking the screen texture as the background, which poses some limitations.
 Color filtering works as expected inside the same voxel volume, but 
 
-### Incorrect received shadows and lighting
-
-Shadows received by the voxel and the lighting (normals) are incorrect with the
-current official Godot 4.0 release.
-
-* Reason is detailed in [Proposal 1942](https://github.com/godotengine/godot-proposals/issues/1942)
-* A solution has been proposed in [PR 65307](https://github.com/godotengine/godot/pull/65307)
-
-At the time of writing the fix has **not** been made it into an official Godot release.
-
-**Please vote on the above PR and proposal. Thank you!**
-
-In order to get proper lighting you need to rebuild Godot with the changes from the
-above PR merged into the official code. At the time of writing the changes can merge
-with both the Godot 4.0 code and the current master (4.1).
-
-1. Fork the Godot repository (if you haven't yet)
-2. Create a new branch and switch to it
-3. Cherry-pick the changes from the above PR's branch
-4. Build a release version of Godot locally
-
-```sh
-set PYTHONUNBUFFERED=1
-call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-scons -j 12 platform=windows target=editor >build.log 2>&1
-```
-
-Customize the `-j` parameter to match the number of threads your CPU can run in parallel.
-
-If you have enough free RAM, then it is faster to build Godot on a ramdisk.
-You can create one using [ImDisk](https://sourceforge.net/projects/imdisk-toolkit/).
-
-(It also saves quite a few writes to your NVMe/SSD.)
-
-Don't forget to copy your Godot binary from the ramdisk to your normal disk at the end,
-ramdisk contents are lost on the next OS reboot.
-
 ## Plans
 
 * Resurrect the Vox resource loader

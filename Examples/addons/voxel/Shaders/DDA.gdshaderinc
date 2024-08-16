@@ -166,12 +166,12 @@ vec3 to_back_face(const vec3 front, const vec3 ray, const vec3 ray_rec) {
 }
 
 
-// Returns the non-linear depth value corresponding to a point in model space
-// and stores the linear depth value as well
-float calc_depth(const vec3 model_point, mat4 projection_matrix, mat4 modelview_matrix, out float linear_depth) {
+// Returns the vertex position in view space corresponding to a point in model space.
+// The z component of the vertex position in view space is the linear depth, where zero is the screen.
+// It also returns the non-linear depth for use in the Z buffer, return this value in DEPTH.
+vec3 calc_vertex(const vec3 model_point, mat4 projection_matrix, mat4 modelview_matrix, out float depth) {
 	vec4 viewPos = modelview_matrix * vec4(model_point, 1.0);
-	linear_depth = viewPos.z / viewPos.w;
-
 	vec4 ndc = projection_matrix * viewPos;
-    return ndc.z / ndc.w;
+	depth = ndc.z / ndc.w;
+	return viewPos.xyz / viewPos.w;
 }
