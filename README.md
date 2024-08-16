@@ -1,6 +1,6 @@
 # Voxel
 
-**Voxel rendering addon for Godot 4.0.**
+**Voxel rendering addon for Godot 4.3.**
 
 Based on an efficient 2-level DDA algorithm, implemented 100% on the GPU as a fragment shader.
 
@@ -79,7 +79,8 @@ I will include a test project for transparency later.
 
 The shader implements color filtering with proper transmittance calculation.
 It is taking the screen texture as the background, which poses some limitations.
-Color filtering works as expected inside the same voxel volume, but 
+Color filtering works as expected inside the same voxel volume, but falls back
+to alpha channel by turning the transparency effectively grayscale. 
 
 ## Plans
 
@@ -88,6 +89,7 @@ Color filtering works as expected inside the same voxel volume, but
   * Lights to make use of SDFGI
   * Occluders to reduce overdraw
   * Colliders to enable physics
+* Add a one bit per voxel texture to speed up skipping empty voxels.
 * Add more examples (PRs are very welcome, I'm not an artist)
 
 ### Screenshots
