@@ -1,0 +1,26 @@
+[remap]
+
+importer="2d_array_texture"
+type="CompressedTexture2DArray"
+uid="uid://ddogs0tsovu8f"
+path="res://.godot/imported/Voxel.png-3e0d3b8d16eb4a50fb3a414ba4798e14.ctexarray"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://Scenes/TorusBox/Assets/Voxel.png"
+dest_files=["res://.godot/imported/Voxel.png-3e0d3b8d16eb4a50fb3a414ba4798e14.ctexarray"]
+
+[params]
+
+compress/mode=3
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/channel_pack=1
+mipmaps/generate=false
+mipmaps/limit=-1
+slices/horizontal=1
+slices/vertical=60

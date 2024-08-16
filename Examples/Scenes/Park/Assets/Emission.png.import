@@ -1,0 +1,26 @@
+[remap]
+
+importer="2d_array_texture"
+type="CompressedTexture2DArray"
+uid="uid://r843oxok52aa"
+path="res://.godot/imported/Emission.png-d46e5b7f5c90186fcf41bb3343077e41.ctexarray"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://Scenes/Park/Assets/Emission.png"
+dest_files=["res://.godot/imported/Emission.png-d46e5b7f5c90186fcf41bb3343077e41.ctexarray"]
+
+[params]
+
+compress/mode=3
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/channel_pack=0
+mipmaps/generate=false
+mipmaps/limit=-1
+slices/horizontal=8
+slices/vertical=2

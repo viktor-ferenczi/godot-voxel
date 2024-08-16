@@ -1,0 +1,26 @@
+[remap]
+
+importer="2d_array_texture"
+type="CompressedTexture2DArray"
+uid="uid://cmc23yvmi318s"
+path="res://.godot/imported/RSMA.png-52a2c6cf6d541a7841f60ebe72daaaf9.ctexarray"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://Scenes/TorusBox/Assets/RSMA.png"
+dest_files=["res://.godot/imported/RSMA.png-52a2c6cf6d541a7841f60ebe72daaaf9.ctexarray"]
+
+[params]
+
+compress/mode=3
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/channel_pack=1
+mipmaps/generate=false
+mipmaps/limit=-1
+slices/horizontal=4
+slices/vertical=1

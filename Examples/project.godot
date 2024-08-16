@@ -11,9 +11,10 @@ config_version=5
 [application]
 
 config/name="Voxel"
-run/main_scene="res://addons/voxel/Examples/TorusBox/TorusBox.tscn"
+run/main_scene="res://Scenes/TorusBox/TorusBox.tscn"
 config/features=PackedStringArray("4.3", "Forward Plus")
 config/icon="res://icon.png"
+run/name="Voxel"
 
 [display]
 

@@ -1,0 +1,17 @@
+[gd_resource type="Environment" load_steps=4 format=3]
+
+[ext_resource type="Texture2D" uid="uid://dtr7f5idpreui" path="res://Assets/Environments/Lilienstein.jpg" id="1_h0bfe"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_uttdq"]
+panorama = ExtResource("1_h0bfe")
+
+[sub_resource type="Sky" id="Sky_l7wmw"]
+sky_material = SubResource("PanoramaSkyMaterial_uttdq")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_l7wmw")
+ambient_light_source = 3
+reflected_light_source = 2
+glow_enabled = true
+glow_intensity = 3.0
