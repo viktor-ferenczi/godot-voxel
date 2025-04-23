@@ -7,7 +7,8 @@ Based on an efficient 2-level DDA algorithm, implemented 100% on the GPU as a fr
 This approach allows for good performance and opens up the possibility of making runtime changes
 to voxels at a relatively low cost.
 
-Detailed documentation in mostly in the shader source files.
+Please find the detailed documentation of the algorithm and the expected texture format
+in the shader source code (`*.gdshader` and `*.gdshaderinc` files).
 
 Scroll down on this page for screenshots on what's possible. 
 
