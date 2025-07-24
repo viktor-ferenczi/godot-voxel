@@ -1,7 +1,7 @@
 [gd_scene load_steps=20 format=3 uid="uid://0cmsmht5s3se"]
 
 [ext_resource type="Environment" uid="uid://d31fyqy34attt" path="res://Assets/Environments/Photostudio.tres" id="1_etq48"]
-[ext_resource type="Script" path="res://Scenes/TorusBox/TorusBox.gd" id="1_n3c0i"]
+[ext_resource type="Script" uid="uid://cukbhr1s6x7dm" path="res://Scenes/TorusBox/TorusBox.gd" id="1_n3c0i"]
 [ext_resource type="PackedScene" uid="uid://csrg8wea6p8hh" path="res://addons/voxel/Scenes/TexturedVoxelModel.tscn" id="2_h717o"]
 [ext_resource type="Texture2D" uid="uid://dltatidneccje" path="res://Scenes/TorusBox/Assets/Model.png" id="4_7rnav"]
 [ext_resource type="CompressedTexture2DArray" uid="uid://ddogs0tsovu8f" path="res://Scenes/TorusBox/Assets/Voxel.png" id="5_3w17g"]
@@ -62,8 +62,8 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_13wll"]
 _data = {
-"RESET": SubResource("Animation_8ovjl"),
-"RotateStage": SubResource("Animation_2gi3a")
+&"RESET": SubResource("Animation_8ovjl"),
+&"RotateStage": SubResource("Animation_2gi3a")
 }
 
 [node name="TorusBox" type="Node3D"]
@@ -106,7 +106,7 @@ transform = Transform3D(0.858092, -0.253999, 0.446277, -0.00182833, 0.867577, 0.
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-"": SubResource("AnimationLibrary_13wll")
+&"": SubResource("AnimationLibrary_13wll")
 }
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]

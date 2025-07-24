@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=4 uid="uid://clyxd0p7tb3nx"]
 
-[ext_resource type="Script" path="res://addons/voxel/Mesh/MeshBuilder.gd" id="1_y2ep3"]
+[ext_resource type="Script" uid="uid://slxj3s1heqaj" path="res://addons/voxel/Mesh/MeshBuilder.gd" id="1_y2ep3"]
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_gssi0"]
 _surfaces = [{
