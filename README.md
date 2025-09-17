@@ -39,16 +39,16 @@ Front faces are culled, only the back faces are rendered. It allows for viewing 
 voxel volume from inside, while still provide full view from the outside.
 
 For each view ray the shader
-* map the ray to the voxel box (model space)
-* calculate front face intersection from the back one
+* maps the ray to the voxel box (model space)
+* calculates front face intersection from the back one
 * walks over the voxel cubes (1st level)
-* skip any voxel cubes behind the view plane
+* skips any voxel cubes behind the view plane
 * for each voxel cube with any non-empty voxels
-  * skip any voxels behind the view plane
-  * call the sampler to determine whether the voxel exists, opaque or transparent
-  * accumulate transparent voxels along the ray
-  * stop at the first opaque voxel along the ray
-* call the sampler to fetch PBR properties (separate for opaque and transparent)
+  * skips any voxels behind the view plane
+  * calls the sampler to determine whether the voxel exists, opaque or transparent
+  * accumulates transparent voxels along the ray
+  * stops at the first opaque voxel along the ray
+* calls the sampler to fetch PBR properties (separate for opaque and transparent)
 
 The opaque, transparent and shadow passes differ, because they do only the
 processing required for the given pass. Transparent voxels are not rendered
