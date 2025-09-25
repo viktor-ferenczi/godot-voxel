@@ -1,6 +1,8 @@
 # Voxel
 
-**Voxel rendering addon for Godot 4.3.**
+**Voxel rendering addon for Godot 4.3+**
+
+[Godot Voxel on the Asset Library](https://godotengine.org/asset-library/asset/1773)
 
 Based on an efficient 2-level DDA algorithm, implemented 100% on the GPU as a fragment shader.
 
